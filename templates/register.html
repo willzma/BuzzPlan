@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>Register</title>
+    <meta charset="utf-8" />
+    <script src="search.js"></script>
+    <link rel = "stylesheet" type = "text/css" href = "{{ url_for('static', filename='mystyle.css') }}" />
+
+</head>
+
+<body>
+    <form>
+        <div class="registerPart">
+        <h1>Register</h1>
+        <p>Please fill in this form to create an account.</p>
+        <hr>
+
+            <label for="username"><b>UserName</b></label>
+            <input type="text" placeholder="Enter username" name="username" required>
+
+            <label for="psw"><b>Password</b></label>
+            <input type="password" placeholder="Enter Password" name="psw" required>
+
+            <label for="psw-repeat"><b>Repeat Password</b></label>
+            <input type="password" placeholder="Repeat Password" name="psw-repeat" required>
+        <hr>
+
+        <p>By creating an account you agree to our <a href="#">Terms & Privacy</a>.</p>
+        <button type="submit" class="register">Register</button>
+        </div>
+
+        <div class="signinPart">
+        <p>Already have an account? <a href="#">Sign in</a>.</p>
+        </div>
+    </form> 
+
+<br><br>
+</body>
+</html>

@@ -1,0 +1,5 @@
+.git
+src
+Gruntfile.js
+bower.json
+release.sh
