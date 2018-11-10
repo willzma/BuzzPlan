@@ -46,13 +46,22 @@ hr {
     opacity: 1;
 }
 
-/* Add a blue text color to links */
-a {
-    color: dodgerblue;
+.signin {
+    background-color: #4CAF50;
+    color: white;
+    padding: 16px 20px;
+    margin: 8px 0;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+    opacity: 0.9;
 }
 
-/* Set a grey background color and center the text of the "sign in" section */
-.signinPart {
-    background-color: #f1f1f1;
-    text-align: center;
+
+.signin:hover {
+    opacity: 1;
+}
+
+a {
+    color: dodgerblue;
 }

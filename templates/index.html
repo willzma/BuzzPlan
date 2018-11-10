@@ -1,17 +1,23 @@
-<!DOCTYPE html>
-
-<html>
-<head>
-    <title>Calendar</title>
-    <meta charset="utf-8" />
-
-</head>
-
-<body>
-    <form action = "http://localhost:5000/register">
-        <button type="submit" class="register">Register</button>
-    </form> 
-
-<br><br>
-</body>
-</html>
+<!doctype html>
+<title>{% block title %}{% endblock %}BuzzPlan</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='mystyle.css') }}">
+<nav>
+  <h1>BuzzPlan</h1>
+  <ul>
+    {% if g.user %}
+      <li><span>{{ g.user['username'] }}</span>
+    {% else %}
+      <li><a href="{{ url_for('register') }}">Register</a>
+      <li><a href="{{ url_for('signin') }}">Sign In</a>
+    {% endif %}
+  </ul>
+</nav>
+<section class="content">
+  <header>
+    {% block header %}{% endblock %}
+  </header>
+  {% for message in get_flashed_messages() %}
+    <div class="flash">{{ message }}</div>
+  {% endfor %}
+  {% block content %}{% endblock %}
+</section>

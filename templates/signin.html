@@ -1,0 +1,20 @@
+{% extends 'index.html' %}
+<link rel="stylesheet" href="{{ url_for('static', filename='mystyle.css') }}">
+
+{% block content %}
+  <form method="post">
+        <div class="signIn">
+        <h1>Sign In</h1>
+        <hr>
+
+            <label for="username"><b>UserName</b></label>
+            <input type="text" placeholder="Enter username" name="username" required>
+
+            <label for="psw"><b>Password</b></label>
+            <input type="password" placeholder="Enter Password" name="psw" required>
+
+        <hr>
+        <button type="submit" class="signin">Sign In</button>
+        </div>
+    </form> 
+{% endblock %}
