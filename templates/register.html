@@ -1,7 +1,13 @@
+<!DOCTYPE html>
 
-{% extends 'index.html' %}
+<html>
+<head>
+<meta charset = "utf-8">
+<title>Register</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='mystyle.css') }}">
+</head>
+<body>
 
-{% block content %}
     <form method="post">
         <div class="registerPart">
         <h1>Register</h1>
@@ -23,4 +29,5 @@
         </div>
     </form> 
 
-{% endblock %}
+</body>
+</html>

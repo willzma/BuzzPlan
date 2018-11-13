@@ -1,23 +1,134 @@
-<!doctype html>
+<!DOCTYPE html>
+
+<html>
+<head>
+<meta charset = "utf-8">
+
 <title>{% block title %}{% endblock %}BuzzPlan</title>
-<link rel="stylesheet" href="{{ url_for('static', filename='mystyle.css') }}">
-<nav>
-  <h1>BuzzPlan</h1>
-  <ul>
-    {% if g.user %}
-      <li><span>{{ g.user['username'] }}</span>
-    {% else %}
-      <li><a href="{{ url_for('register') }}">Register</a>
-      <li><a href="{{ url_for('signin') }}">Sign In</a>
-    {% endif %}
-  </ul>
-</nav>
-<section class="content">
-  <header>
-    {% block header %}{% endblock %}
-  </header>
-  {% for message in get_flashed_messages() %}
-    <div class="flash">{{ message }}</div>
-  {% endfor %}
-  {% block content %}{% endblock %}
-</section>
+<link rel="stylesheet" href="{{ url_for('static', filename='page.css') }}">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+</head>
+
+<body>
+  <div class="header">
+    <div class="headernodewrapper">
+        <div class="headernode">
+            <div class="headercontent" style="font-size:28px">BuzzPlan</div>
+        </div>
+        <div class="headernode" style="position: absolute; left: 200px;">
+            <div class="headercontent">
+                <div class="dropdown">
+                    <div class="ddcontent">
+                    <select>
+                        <option value="s19">Spring 2019</option>
+                        <option value="f18">Fall 2018</option>
+                        <option value="sm18">Summer 2018</option>
+                        <option value="s18">Spring 2018</option>
+                    </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="headernode" id="registerbtn">
+            <span class="headercontent"><a href="{{ url_for('register') }}">Register</a></span>
+        </div>
+        <div class="headernode" id="loginbtn">
+            <span class="headercontent"><a href="{{ url_for('signin') }}">Sign In</a></span>
+        </div>
+    </div>
+  </div>
+
+  <div class="calclasswrapper">
+    <div id="calendarwrap", style="position: absolute; top: 100px;left: 20px;">
+        <table id="calendar", border="1">
+          <caption><strong>Calendar</strong></caption>
+
+          <thead>
+          <tr>
+            <td><div class="calendarClasses"></div></td>
+            <th>Monday</th>
+            <th>Tuesday</th>
+            <th>Wednesday</th>
+            <th>Thursday</th>
+            <th>Friday</th>
+          </tr>
+          </thead>
+
+          <tbody>
+
+          <tr>
+            <td class="weektimes">8:00 <span class="small">am</span></td>
+            <td></td><td></td><td></td><td></td><td></td>
+          </tr>
+          <tr>
+            <td class="weektimes">9:00 <span class="small">am</span></td>
+            <td></td><td></td><td></td><td></td><td></td>
+          </tr>
+          <tr>
+            <td class="weektimes">10:00 <span class="small">am</span></td>
+            <td></td><td></td><td></td><td></td><td></td>
+          </tr>
+          <tr>
+            <td class="weektimes">11:00 <span class="small">am</span></td>
+            <td></td><td></td><td></td><td></td><td></td>
+          </tr>
+          <tr>
+            <td class="weektimes">12:00 <span class="small">pm</span></td>
+            <td></td><td></td><td></td><td></td><td></td>
+          </tr>
+          <tr>
+            <td class="weektimes">1:00 <span class="small">pm</span></td>
+            <td></td><td></td><td></td><td></td><td></td>
+          </tr>
+          <tr>
+            <td class="weektimes">2:00 <span class="small">pm</span></td>
+            <td></td><td></td><td></td><td></td><td></td>
+          </tr>
+          <tr>
+            <td class="weektimes">3:00 <span class="small">pm</span></td>
+            <td></td><td></td><td></td><td></td><td></td>
+          </tr>
+          <tr>
+            <td class="weektimes">4:00 <span class="small">pm</span></td>
+            <td></td><td></td><td></td><td></td><td></td>
+          </tr>
+          <tr>
+            <td class="weektimes">5:00 <span class="small">pm</span></td>
+            <td></td><td></td><td></td><td></td><td></td>
+          </tr>
+          <tr>
+            <td class="weektimes">6:00 <span class="small">pm</span></td>
+            <td></td><td></td><td></td><td></td><td></td>
+          </tr>
+          <tr>
+            <td class="weektimes">7:00 <span class="small">pm</span></td>
+            <td></td><td></td><td></td><td></td><td></td>
+          </tr>
+          <tr>
+            <td class="weektimes">8:00 <span class="small">pm</span></td>
+            <td></td><td></td><td></td><td></td><td></td>
+            </tr>
+          <tr>
+            <td class="weektimes">9:00 <span class="small">pm</span></td>
+            <td></td><td></td><td></td><td></td><td></td>
+          </tr>
+          </tbody>
+          </table>
+        </div>
+      </div>
+
+
+
+  <section class="content">
+    <header>
+      {% block header %}{% endblock %}
+    </header>
+    {% for message in get_flashed_messages() %}
+      <div class="flash">{{ message }}</div>
+    {% endfor %}
+    {% block content %}{% endblock %}
+  </section>
+
+</body>
+</html>
