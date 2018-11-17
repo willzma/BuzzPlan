@@ -1,0 +1,78 @@
+<html>
+<head>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.min.css" rel="stylesheet" type="text/css" />
+
+    <style type="text/css">
+        #mynetwork {
+            width: 600px;
+            height: 400px;
+            border: 1px solid lightgray;
+        }
+    </style>
+</head>
+<body>
+<div id="mynetwork"></div>
+
+<div id="mynetwork2"></div>
+
+<script type="text/javascript" src="./graphVis.js"></script>
+<script type="text/javascript">
+    var course_name = 'MATH 4320'
+    var course_taken = new Set(['MATH 15X2', 'MATH 1522'])
+    var course_pre = {'MATH 4320': {'courses': ['MATH 2401',
+                                                'MATH 2411',
+                                                'MATH 24X1',
+                                                'MATH 2605',
+                                                'MATH 2551',
+                                                'MATH 2561',
+                                                'MATH 2550',
+                                                'MATH 2X51'],
+                                    'type': 'or'},
+                      'MATH 2401': {'courses': ['MATH 1502',
+                                                'MATH 1512',
+                                                {'courses': ['MATH 15X2', 
+                                                             'MATH 1522'], 
+                                                 'type': 'and'}],
+                                    'type': 'or'},
+                      'MATH 2411': {'courses': ['MATH 1502', 
+                                                'MATH 1512'], 
+                                    'type': 'or'},
+                      'MATH 2605': {'courses': ['MATH 1502',
+                                                'MATH 1512',
+                                                'MATH 1504',
+                                                'MATH 1555',
+                                                '(   (',
+                                                'MATH 1552',
+                                                'MATH 15X2',
+                                                'MATH 1X52'],
+                                    'type': 'or'},
+                      'MATH 2551': {'courses': ['MATH 1502',
+                                                'MATH 1512',
+                                                'MATH 1504',
+                                                'MATH 1555',
+                                                '(   (',
+                                                'MATH 1552',
+                                                'MATH 15X2',
+                                                'MATH 1X52'],
+                                    'type': 'or'},
+                      'MATH 2561': {'courses': ['MATH 1502',
+                                                'MATH 1512',
+                                                'MATH 1504',
+                                                'MATH 1555',
+                                                '(   (',
+                                                'MATH 1552',
+                                                'MATH 15X2',
+                                                'MATH 1X52'],
+                                    'type': 'or'},   
+                      'MATH 2550': {'courses': ['MATH 1502',
+                                                'MATH 1512',
+                                                '(   (',
+                                                'MATH 1552',
+                                                'MATH 15X2',
+                                                'MATH 1X52'],
+                                    'type': 'or'}}
+    network = creat_graph('mynetwork', course_name, course_pre, course_taken)
+</script>
+</body>
+</html>
