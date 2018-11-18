@@ -4,21 +4,49 @@ Functions for doing course lookups in the catalog.
 
 from config import catalog_url, courses_href, search_href, unique_abbrs, unique_abbr_hrefs
 from config import supported_degrees, degree_code_ranges
+from utils import asciify_spaces, urlify_spaces
 from lxml import html
+import logging
 import requests
 import re
+
+
+log = logging.getLogger('catalog')
+
+
+def parse_code(code):
+    '''
+    Returns a tuple of the abbreviation and number from a course code.
+    e.g. 'CS 1331' returns (CS, 1331)
+    '''
+    partition = code.partition(' ')
+    return partition[0], int(partition[2])
+
 
 def parse_hours(hours):
     '''
     Returns tuple of possible credit hours from a string.
     e.g. '1-3' appears fairly often, will return (1, 2, 3).
     '''
-    if '-' in hours:
-        hours = hours.partition('-')
-        lower_bound, upper_bound = int(hours[0].strip()), int(hours[2].strip())
+    nums = re.findall(r'[0-9]+', hours)
+    if len(nums) > 1:
+        lower_bound, upper_bound = int(nums[0]), int(nums[1])
         return tuple(range(lower_bound, upper_bound + 1))
     else:
-        return (int(hours))
+        return (int(nums[0]))
+
+
+def parse_title(title):
+    '''
+    Returns course code, course name, and credit hours from search result course block titles.
+    e.g. 'CS 6475. Comp. Photography. 3 Credit Hours' returns (CS 6475, Comp. Photography, (3))
+    '''
+    code_per, hours_cut = title.find('.'), title.rfind('Credit Hour')
+    code, title = asciify_spaces(title[:code_per]), title[code_per + 1:hours_cut].strip()
+    last_per = title.rfind('.')
+    name, hours = title[:last_per].strip(), parse_hours(title[last_per + 1:])
+    return code, name, hours
+
 
 def filter_by_degree(courses, degree):
     '''
@@ -29,12 +57,21 @@ def filter_by_degree(courses, degree):
     '''
     results = []
     if degree not in supported_degrees:
-        raise ValueError(degree + " degrees are not currently supported.")
+        raise ValueError("{} degrees are not currently supported.".format(degree))
     for course in courses:
         code, range = int(re.search(r'[0-9]{4}', course)), degree_code_ranges[degree]
         if code >= range[0] and code <= range[1]:
             results.append(course)
     return results
+
+
+def filter_by_abbr(courses, abbr):
+    '''
+    Given a list of courses and an abbreviation, e.g. CS, returns all
+    courses in the list matching that abbreviation.
+    '''
+    return [course for course in courses if parse_code(course)[0] == abbr]
+
 
 def lookup_course(code):
     '''
@@ -43,41 +80,42 @@ def lookup_course(code):
 
     e.g. 'CS 1331' returns ('CS 1331', 'Intro-Object Orient Prog', (3), <desc>)
     '''
-    course = html.fromstring(requests.get(catalog_url + search_href + code.replace(' ', '%20'))
-        .content).xpath('//*[@id="fssearchresults"]/div[1]')[0]
-    course_info = course.xpath('.//h2/text()')[0].split('.')
-    name, hours = course_info[1].strip(), parse_hours(course_info[2].partition('Credit Hour')[0].strip())
-    description = course.xpath('.//div/p/text()')[0].strip()
+    course = html.fromstring(requests.get(catalog_url + search_href + urlify_spaces(code))
+        .content).xpath('//*[@id="fssearchresults"]/div[1]')
+    if not len(course):
+        raise ValueError("{} yielded no search results. It may not exist in the catalog.".format(code))
+    block_title = course[0].xpath('.//h2/text()')[0]
+    code, name, hours = parse_title(block_title)
+    description = course[0].xpath('.//div/p/text()')[0].strip()
     return code, name, hours, description
 
-def lookup_abbrs(abbrs, degree=None):
+
+def lookup_abbr(abbr, filter_abbr=None, filter_degree=None):
     '''
     Performs lookups based on known course code abbreviations.
     If passed in a degree, returns only the appropriate courses.
 
     Useful as requirements tables often use 'Any <abbr>' as shorthand.
 
-    e.g. ['HUM', 'SS', 'INTA']
+    e.g. inputs ['HUM', 'SS', 'INTA']
     '''
     results = []
-    for abbr in abbrs: # This needs to be replaced with a regex solution... see CS 6475 example
-        if abbr not in unique_abbrs:
-            search = html.fromstring(requests.get(catalog_url + courses_href + abbr.lower())
-                .content).xpath('//*[@id="sc_sccoursedescs"]')[0]
-            for course_block in search:
-                title = course_block[0].xpath('.//text()')[0].split('.')
-                title = list(filter(None, title))
-                code, name = title[0].strip().replace(u'\xa0', ' '), title[1].strip()
-                hours = parse_hours(title[2].partition('Credit Hour')[0].strip())
-                results.append((code, name, hours))
-        else:
-            table = html.fromstring(requests.get(catalog_url + unique_abbr_hrefs[abbr][0]).content).xpath(
-                '//*[@id="textcontainer"]/table[' + str(unique_abbr_hrefs[abbr][1]) + ']')[0][3]
-            for row in table:
-                code = row[0][0].attrib['title'].replace(u'\xa0', ' ')
-                name, hours = row[1].xpath('.//text()')[0], parse_hours(row[2].xpath('.//text()')[0])
-                results.append((code, name, hours))
+    if abbr not in unique_abbrs:
+        search = html.fromstring(requests.get(catalog_url + courses_href + abbr.lower())
+            .content).xpath('//*[@id="sc_sccoursedescs"]')[0]
+        for course_block in search:
+            results.append(parse_title(course_block[0].xpath('.//text()')[0])[0])
+    else:
+        table = html.fromstring(requests.get(catalog_url + unique_abbr_hrefs[abbr][0]).content).xpath(
+            '//*[@id="textcontainer"]/table[' + str(unique_abbr_hrefs[abbr][1]) + ']')[0][3]
+        for row in table:
+            results.append(asciify_spaces(row[0][0].attrib['title']))
     results = sorted(list(set(results)))
-    return filter_by_degree(results, degree) if degree else results
+    results = filter_by_abbr(results, filter_abbr) if filter_abbr else results
+    results = filter_by_degree(results, filter_degree) if filter_degree else results
+    return results
 
-print(lookup_abbrs(['CS']))
+
+#print(lookup_course('MSE 3003'))
+#print(lookup_abbr('CS'))
+#print(lookup_abbr('HUM', filter_abbr='LMC'))
