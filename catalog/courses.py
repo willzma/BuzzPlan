@@ -20,7 +20,7 @@ def parse_code(code):
     e.g. 'CS 1331' returns (CS, 1331)
     '''
     partition = code.partition(' ')
-    return partition[0], int(partition[2])
+    return partition[0], int(re.findall(r'[0-9]{4}', partition[2])[0])
 
 
 def parse_hours(hours):
@@ -59,7 +59,7 @@ def filter_by_degree(courses, degree):
     if degree not in supported_degrees:
         raise ValueError("{} degrees are not currently supported.".format(degree))
     for course in courses:
-        code, range = int(re.search(r'[0-9]{4}', course)), degree_code_ranges[degree]
+        code, range = int(re.findall(r'[0-9]{4}', course)[0]), degree_code_ranges[degree]
         if code >= range[0] and code <= range[1]:
             results.append(course)
     return results
@@ -70,7 +70,15 @@ def filter_by_abbr(courses, abbr):
     Given a list of courses and an abbreviation, e.g. CS, returns all
     courses in the list matching that abbreviation.
     '''
-    return [course for course in courses if parse_code(course)[0] == abbr]
+    return [c for c in courses if parse_code(c)[0] == abbr]
+
+
+def filter_by_range(courses, start=1000, end=9999):
+    '''
+    Given a list of courses and an abbreviation, e.g. CS, returns all
+    courses with codes greater than start, and less than end.
+    '''
+    return [c for c in courses if parse_code(c)[1] >= start and parse_code(c)[1] <= end]
 
 
 def lookup_course(code):
@@ -90,7 +98,7 @@ def lookup_course(code):
     return code, name, hours, description
 
 
-def lookup_abbr(abbr, filter_abbr=None, filter_degree=None):
+def lookup_abbr(abbr, filter_abbr=None, filter_degree=None, start=1000, end=9999):
     '''
     Performs lookups based on known course code abbreviations.
     If passed in a degree, returns only the appropriate courses.
@@ -104,7 +112,9 @@ def lookup_abbr(abbr, filter_abbr=None, filter_degree=None):
         search = html.fromstring(requests.get(catalog_url + courses_href + abbr.lower())
             .content).xpath('//*[@id="sc_sccoursedescs"]')[0]
         for course_block in search:
-            results.append(parse_title(course_block[0].xpath('.//text()')[0])[0])
+            result = parse_title(course_block[0].xpath('.//text()')[0])[0]
+            if re.findall(r'[0-9]{4}', result): # Filter out results with X's in their codes
+                results.append(result)
     else:
         table = html.fromstring(requests.get(catalog_url + unique_abbr_hrefs[abbr][0]).content).xpath(
             '//*[@id="textcontainer"]/table[' + str(unique_abbr_hrefs[abbr][1]) + ']')[0][3]
@@ -112,6 +122,7 @@ def lookup_abbr(abbr, filter_abbr=None, filter_degree=None):
             results.append(asciify_spaces(row[0][0].attrib['title']))
     results = sorted(list(set(results)))
     results = filter_by_abbr(results, filter_abbr) if filter_abbr else results
+    results = filter_by_range(results, start, end) if start or end else results
     results = filter_by_degree(results, filter_degree) if filter_degree else results
     return results
 
