@@ -6,7 +6,8 @@ function creat_graph(container_id, course_name, course_pre, course_taken){
                   shape: 'box',
                   level: 0,
                   inDegree: 0,
-                  on: false}
+                  on: false,
+                  build: false}
 
     if (course_name in course_taken) start['color'] = 'green'
     else start['color'] = 'red'
@@ -14,6 +15,7 @@ function creat_graph(container_id, course_name, course_pre, course_taken){
     nodes.push(start)
     var edges = []
     var nodes = new vis.DataSet(nodes)
+    console.log(nodes.get('ssfdfg'))
 
     // create an array with edges
     var edges = new vis.DataSet(edges)
@@ -37,13 +39,21 @@ function creat_graph(container_id, course_name, course_pre, course_taken){
 
     // initialize your network!
     var network = new vis.Network(container, data, options)
-    recursive_build(course_name, nodes, edges, course_pre, course_taken)
+
+    //recursive_build(course_name, nodes, edges, course_pre, course_taken)
     network.on('click', function (params){
         if (params['nodes'].length == 0){
             //console.log('Not click on node')
             return 
         }
         var click_class = nodes.get(params['nodes'][0])
+        if (!click_class['build']){
+            console.log('hi')
+            build(click_class, nodes, edges, course_pre, course_taken)
+            click_class = nodes.get(params['nodes'][0])
+            console.log(click_class)
+        }
+
         if (!click_class['on'])
             show(click_class, nodes, edges)
         else{
@@ -51,6 +61,7 @@ function creat_graph(container_id, course_name, course_pre, course_taken){
             click_class['on'] = false
             nodes.update(click_class)
         }
+
     })
 
     return network
@@ -83,6 +94,9 @@ function show(click_class, nodes, edges){
 }
 
 function recursive_hide(cls, nodes, edges){
+    if (cls['id'] == 'MATH 1511'){
+            console.log('shit', cls)
+    }
     if (!cls['on']){
         console.log('Class clicked is already off...')
         return
@@ -93,26 +107,41 @@ function recursive_hide(cls, nodes, edges){
         return
     }
 
+
     var n_nodes = nodes.get(cls['next_level_node'])
     var n_edges = edges.get(cls['next_level_edge'])
 
+
+    if (cls['id'] == 'MATH 1511'){
+        console.log(n_nodes)
+    }
     for (var i = 0; i < n_edges.length; i ++){
         n_edges[i]['hidden'] = true
     }
     edges.update(n_edges)
 
+    var next_update = []
     for (var i = 0; i < n_nodes.length; i++){
         n_nodes[i]['inDegree'] -= 1
+        if (cls['id'] == 'MATH 1511'){
+            console.log(n_nodes[i]['id'])
+            console.log()
+        }
         if (n_nodes[i]['inDegree'] == 0){
-            recursive_hide(n_nodes[i], nodes, edges)
-            n_nodes[i]['hidden'] = true
-            n_nodes[i]['on'] = false
-
+            next_update.push(n_nodes[i])
         }
         if (n_nodes[i]['inDegree'] < 0) 
             console.log('Warning: Somethings go wrong when update in degree...')
     }
     nodes.update(n_nodes)
+
+
+    for (var i = 0; i < next_update.length; i++){
+        recursive_hide(next_update[i], nodes, edges)
+        nodes.update({id: next_update[i]['id'], 
+                      hidden: true,
+                      on: false})
+    }
     
 
 }
@@ -120,15 +149,14 @@ function recursive_hide(cls, nodes, edges){
 
 
 function recursive_build(cur_class, nodes, edges, course_pre, course_taken){
-    var next_level = build(cur_class, nodes, edges, course_pre, course_taken)
+    var next_level = build(nodes.get(cur_class), nodes, edges, course_pre, course_taken)
     for (var i = 0; i < next_level.length; i ++){
         recursive_build(next_level[i], nodes, edges, course_pre, course_taken)
     }
 
 }
 
-function build(class_name, nodes, edges, course_pre, course_taken){
-    var class_node = nodes.get(class_name)
+function build(class_node, nodes, edges, course_pre, course_taken){
     var next_level = []
     var next_level_edge = []
     if (!course_pre.hasOwnProperty(class_node['label'])){
@@ -189,44 +217,50 @@ function build(class_name, nodes, edges, course_pre, course_taken){
     }
     nodes.update({id: class_node['id'], 
                   next_level_node: next_level, 
-                  next_level_edge: next_level_edge})
+                  next_level_edge: next_level_edge,
+                  build: true})
     return next_level
 }
 
 function add_node_edge(cur_name, parent_node, edge_id, edge_type, nodes, edges, level, green, inter=false) {
-    if (!inter){
-        var node = {id: cur_name, 
-                    label: cur_name, 
-                    shape: 'box',
-                    level: parent_node['level'] + level,
-                    hidden: true,
-                    inDegree: 0,
-                    on: false}
-    }else{
-        var node = {id: cur_name, 
-                    level: parent_node['level'] + level,
-                    hidden: true,
-                    inDegree: 0,
-                    on: false}
+    if (nodes.get(cur_name) == null){
+        if (!inter){
+            var node = {id: cur_name, 
+                        label: cur_name, 
+                        shape: 'box',
+                        level: parent_node['level'] + level,
+                        hidden: true,
+                        inDegree: 0,
+                        on: false,
+                        build: false}
+        }else{
+            var node = {id: cur_name, 
+                        level: parent_node['level'] + level,
+                        hidden: true,
+                        inDegree: 0,
+                        on: false,
+                        build: false}
+        }
+
+        if (green) node['color'] = 'green'
+        else node['color'] = 'red'
+
+        nodes.update(node)
     }
-
-    if (green) node['color'] = 'green'
-    else node['color'] = 'red'
-
-    nodes.update(node)
-
-    var edge = {id: edge_id,
-                from: parent_node['id'], 
-                to: cur_name,
-                hidden: true,
-                color: {inherit: 'to'}}
+    if (edges.get(edge_id) == null){
+        var edge = {id: edge_id,
+                    from: parent_node['id'], 
+                    to: cur_name,
+                    hidden: true,
+                    color: {inherit: 'to'}}
 
 
-    if (edge_type === 'and'){
-        edge['dashes'] = false
-    }else if (edge_type === 'or'){
-        edge['dashes'] = true   
+        if (edge_type === 'and'){
+            edge['dashes'] = false
+        }else if (edge_type === 'or'){
+            edge['dashes'] = true   
+        }
+
+        edges.update(edge)
     }
-
-    edges.update(edge)
 }
