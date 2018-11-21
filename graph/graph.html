@@ -27,7 +27,8 @@
     var course_taken = new Set(['MATH 15X2', 'MATH 1522'])
 
     data_promise.then( function (course_pre){
-        creat_graph('mynetwork', course_name, course_pre, course_taken)
+
+        creat_graph('mynetwork', course_name, course_pre, course_taken, db)
     })
 
     // var course_pre = {'MATH 4320': {'courses': ['MATH 2401',

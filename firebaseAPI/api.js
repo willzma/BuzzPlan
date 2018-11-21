@@ -35,7 +35,14 @@ function preparePrerequisiteData(db, course_name){
 		})
 	})
 
+	return data_promise
+}
 
+function getClassbyIdentifier(db, identifier){
+	var data_promise = db.ref('/Courses').child(identifier).once('value')
+	.then( function (value) {
+		return value.val()
+	})
 	return data_promise
 }
 

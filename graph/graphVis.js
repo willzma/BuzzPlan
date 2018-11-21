@@ -1,5 +1,6 @@
-// create an array with nodes
-function creat_graph(container_id, course_name, course_pre, course_taken){
+color_style = {}
+
+function creat_graph(container_id, course_name, course_pre, course_taken, db){
     var nodes = []
     var start = { id: course_name, 
                   label: course_name, 
@@ -7,7 +8,8 @@ function creat_graph(container_id, course_name, course_pre, course_taken){
                   level: 0,
                   inDegree: 0,
                   on: false,
-                  build: false}
+                  build: false,
+                  }
 
     if (course_name in course_taken) start['color'] = 'green'
     else start['color'] = 'red'
@@ -15,7 +17,6 @@ function creat_graph(container_id, course_name, course_pre, course_taken){
     nodes.push(start)
     var edges = []
     var nodes = new vis.DataSet(nodes)
-    console.log(nodes.get('ssfdfg'))
 
     // create an array with edges
     var edges = new vis.DataSet(edges)
@@ -32,9 +33,9 @@ function creat_graph(container_id, course_name, course_pre, course_taken){
                             direction: 'DU'
                         }
                     },
-                    interaction: {dragNodes :false},
+                    interaction: {dragNodes :false,
+                                  hover:true},
                     physics: {enabled: false}
-
                 }
 
     // initialize your network!
@@ -63,8 +64,31 @@ function creat_graph(container_id, course_name, course_pre, course_taken){
         }
 
     })
+    network.on('hoverNode', function (params){
+        var hover_class = nodes.get(params['node'])
+        if (!hover_class.hasOwnProperty('title')){
+
+            var data_promise = getClassbyIdentifier(db, hover_class['id'])
+            .then( function (value){
+                hover_class['title'] = course_detail(value)
+                nodes.update(hover_class)
+            })
+        }
+    })
 
     return network
+}
+
+function course_detail(data){
+    var string = ('<p>' + data['fullname'] + '</p>')
+    string += ("<p>Grade Basis: " + data['grade_basis'] + '</p>')
+    if (!data.hasOwnProperty('sections'))
+        string += ('<p>No section provided this semester.</p>')
+    else
+        string += ('<p>' + data['sections'].length.toString() + " sections provideed this semester.</p>")
+
+    return string
+
 }
 
 function show(click_class, nodes, edges){
@@ -94,9 +118,6 @@ function show(click_class, nodes, edges){
 }
 
 function recursive_hide(cls, nodes, edges){
-    if (cls['id'] == 'MATH 1511'){
-            console.log('shit', cls)
-    }
     if (!cls['on']){
         console.log('Class clicked is already off...')
         return
@@ -112,9 +133,6 @@ function recursive_hide(cls, nodes, edges){
     var n_edges = edges.get(cls['next_level_edge'])
 
 
-    if (cls['id'] == 'MATH 1511'){
-        console.log(n_nodes)
-    }
     for (var i = 0; i < n_edges.length; i ++){
         n_edges[i]['hidden'] = true
     }
@@ -123,10 +141,6 @@ function recursive_hide(cls, nodes, edges){
     var next_update = []
     for (var i = 0; i < n_nodes.length; i++){
         n_nodes[i]['inDegree'] -= 1
-        if (cls['id'] == 'MATH 1511'){
-            console.log(n_nodes[i]['id'])
-            console.log()
-        }
         if (n_nodes[i]['inDegree'] == 0){
             next_update.push(n_nodes[i])
         }
