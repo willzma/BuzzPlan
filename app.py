@@ -33,12 +33,13 @@ def register():
         pwd= request.form['pwd']
         print(un)
         userInfo = db.reference('userinfo')
-        hashID =abs(hash(un))
-        userInfo.child('ID').set(str(hashID))
-        ID = db.reference('ID')
-        ID.child('username').set(un)
-        ID.child('password').set(pwd)
-        flash('You were successfully registered')
+        #hashID =abs(hash(un))
+        #userInfo.child('ID').set(str(hashID))
+        userInfo.child(un).set({
+            'username': un,
+            'password': pwd
+            })
+        #flash('You were successfully registered')
         return render_template('index.html')
         #return redirect(url_for('register'))
 
@@ -49,16 +50,15 @@ def register():
 def signin():
     if request.method == 'POST':
         un = request.form['username']
-        pwd= request.form['pwd']
-        userInfo = db.reference('userinfo')
-        hashID =abs(hash(un))
-        if userInfo.child('ID').get(hashID):
-            print(un)
+        pwd = request.form['pwd']
+        userInfo = db.reference('userinfo').child(un).get()
+        
+        if userInfo and userInfo['password'] == pwd:
+            print ('Successfully log in.')
         else:
-            print("No")
-        #ID = db.reference('ID')
-        #ID.child('username').get(un)
-        #ID.child('password').get(pwd)
+            print("Username doesn't exist or wrong password.")
+
+        return render_template('index.html')
 
     else:
         return render_template('signin.html')
