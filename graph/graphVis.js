@@ -1,5 +1,3 @@
-color_style = {}
-
 function creat_graph(container_id, course_name, course_pre, course_taken, db){
     var nodes = []
     var start = { id: course_name, 
@@ -11,8 +9,8 @@ function creat_graph(container_id, course_name, course_pre, course_taken, db){
                   build: false,
                   }
 
-    if (course_name in course_taken) start['color'] = 'green'
-    else start['color'] = 'red'
+    if (course_name in course_taken) start['color'] = color_style['green']
+    else start['color'] = color_style['red']
 
     nodes.push(start)
     var edges = []
@@ -28,16 +26,6 @@ function creat_graph(container_id, course_name, course_pre, course_taken, db){
         nodes: nodes,
         edges: edges
     }
-    var options = { layout: {
-                        hierarchical: {
-                            direction: 'DU'
-                        }
-                    },
-                    interaction: {dragNodes :false,
-                                  hover:true},
-                    physics: {enabled: false}
-                }
-
     // initialize your network!
     var network = new vis.Network(container, data, options)
 
@@ -49,10 +37,8 @@ function creat_graph(container_id, course_name, course_pre, course_taken, db){
         }
         var click_class = nodes.get(params['nodes'][0])
         if (!click_class['build']){
-            console.log('hi')
             build(click_class, nodes, edges, course_pre, course_taken)
             click_class = nodes.get(params['nodes'][0])
-            console.log(click_class)
         }
 
         if (!click_class['on'])
@@ -256,8 +242,8 @@ function add_node_edge(cur_name, parent_node, edge_id, edge_type, nodes, edges, 
                         build: false}
         }
 
-        if (green) node['color'] = 'green'
-        else node['color'] = 'red'
+        if (green) node['color'] = color_style['green']
+        else node['color'] = color_style['red']
 
         nodes.update(node)
     }
