@@ -2,8 +2,8 @@
 Functions for doing course lookups in the catalog.
 '''
 
-from config import catalog_url, courses_href, search_href, unique_abbrs, unique_abbr_hrefs
-from config import supported_degrees, degree_code_ranges
+from config import catalog_url, courses_href, search_href, unique_abbrs
+from config import core_areas, supported_degrees, degree_code_ranges
 from utils import asciify_spaces, urlify_spaces
 from lxml import html
 import logging
@@ -21,6 +21,14 @@ def parse_code(code):
     '''
     partition = code.partition(' ')
     return partition[0], int(re.findall(r'[0-9]{4}', partition[2])[0])
+
+
+def parse_formatted_table(table):
+    '''
+    Assuming a well-formatted table with uniform structure (unlike requirements.py),
+    returns a list of course codes as parsed from the table.
+    '''
+    return [asciify_spaces(row[0][0].attrib['title']) for row in table]
 
 
 def parse_hours(hours):
@@ -108,7 +116,7 @@ def lookup_abbr(abbr, filter_abbr=None, filter_degree=None, start=1000, end=9999
     e.g. inputs ['HUM', 'SS', 'INTA']
     '''
     results = []
-    if abbr not in unique_abbrs:
+    if abbr not in unique_abbrs.keys():
         search = html.fromstring(requests.get(catalog_url + courses_href + abbr.lower())
             .content).xpath('//*[@id="sc_sccoursedescs"]')[0]
         for course_block in search:
@@ -116,17 +124,22 @@ def lookup_abbr(abbr, filter_abbr=None, filter_degree=None, start=1000, end=9999
             if re.findall(r'[0-9]{4}', result): # Filter out results with X's in their codes
                 results.append(result)
     else:
-        table = html.fromstring(requests.get(catalog_url + unique_abbr_hrefs[abbr][0]).content).xpath(
-            '//*[@id="textcontainer"]/table[' + str(unique_abbr_hrefs[abbr][1]) + ']')[0][3]
-        for row in table:
-            results.append(asciify_spaces(row[0][0].attrib['title']))
-    results = sorted(list(set(results)))
+        results = get_core_area(unique_abbrs[abbr])
     results = filter_by_abbr(results, filter_abbr) if filter_abbr else results
     results = filter_by_range(results, start, end) if start or end else results
     results = filter_by_degree(results, filter_degree) if filter_degree else results
     return results
 
 
+def get_core_area(area):
+    if area not in core_areas.keys():
+        raise ValueError('Core area {} doesn\'t exist'.format(area))
+    table = html.fromstring(requests.get(catalog_url + core_areas[area][0]).content).xpath(core_areas[area][1])[0]
+    return parse_formatted_table(table)
+
+
 #print(lookup_course('MSE 3003'))
 #print(lookup_abbr('CS'))
 #print(lookup_abbr('HUM', filter_abbr='LMC'))
+#print(lookup_abbr('FREN', start=3000, end=4999))
+#print(get_core_area('Constitution and History'))
