@@ -8,20 +8,16 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='mystyle.css') }}">
 </head>
 <body>
-
   <form method="POST" enctype="multipart/form-data">
         <div class="signIn">
         <h1>Sign In</h1>
         <hr>
-            <label for="username"><b>UserName</b></label>
-            <input type="text" placeholder="Enter username" name="username" required>
+            <input type="text" placeholder="Enter your username" name="username" required>
 
-            <label for="psw"><b>Password</b></label>
-            <input type="password" placeholder="Enter Password" name="pwd" required>
+            <input type="password" placeholder="Enter your password" name="pwd" required>
         <hr>
         <button type="submit" class="signin">Sign In</button>
         </div>
     </form> 
-
 </body>
 </html>

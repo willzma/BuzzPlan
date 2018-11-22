@@ -26,23 +26,17 @@ print ("Done")
 def homepage():
     return render_template('index.html')
 
-@app.route('/register', methods=['GET','POST'])
+@app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
-        un = request.form['username']
-        pwd= request.form['pwd']
-        print(un)
-        userInfo = db.reference('userinfo')
-        #hashID =abs(hash(un))
-        #userInfo.child('ID').set(str(hashID))
-        userInfo.child(un).set({
-            'username': un,
-            'password': pwd
-            })
-        #flash('You were successfully registered')
+        username, password = request.form['username'], request.form['pwd']
+        degree, program, thread = request.form['degree'], request.form['program'], request.form['thread']
+        print(username, password, degree, program, thread)
+        db.reference('users').child(username).set({
+            'username': username,
+            'password': password
+        })
         return render_template('index.html')
-        #return redirect(url_for('register'))
-
     else:
         return render_template("register.html")
     
