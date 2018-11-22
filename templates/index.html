@@ -6,6 +6,7 @@
 
 <title>{% block title %}{% endblock %}BuzzPlan</title>
 <link rel="stylesheet" href="{{ url_for('static', filename='page.css') }}">
+<script type="text/javascript" src="{{ url_for('static', filename='base.js') }}"></script>>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 </head>
 
@@ -118,7 +119,30 @@
         </div>
       </div>
 
+<div class="tabcontainer">
+    <!-- Tab links -->
+  <div class="tab">
+    <button class="tablinks" onclick="openTab(event, 'selection')">Course Select</button>
+    <button class="tablinks" onclick="openTab(event, 'graph')">Graph</button>
+    <button class="tablinks" onclick="openTab(event, 'detail')">Detail</button>
+  </div>
 
+  <!-- Tab content -->
+  <div id="selection" class="tabcontent">
+    <h3>Course Select</h3>
+    <p>Supposed to demo function of selecting course.</p>
+  </div>
+
+  <div id="graph" class="tabcontent">
+    <h3>Graph</h3>
+    <p>Supposed to show the prerequisite graph.</p> 
+  </div>
+
+  <div id="detail" class="tabcontent">
+    <h3>Detail</h3>
+    <p>Supposed to show the course detail.</p>
+  </div>
+</div>
 
   <section class="content">
     <header>
