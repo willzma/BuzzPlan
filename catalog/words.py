@@ -3,7 +3,7 @@ Requirements sometimes (about 10% of the time) give vague words instead of an ac
 As such, encoded here is the actual meaning of some of those vague words. Effectively overrides.
 '''
 
-from courses import lookup_abbr
+from courses import get_core_area, lookup_abbr
 
 words = {
     'General': {
@@ -120,7 +120,7 @@ words = {
             'MATH 4581', 
             'NRE 3301', 
             'NRE 4610'
-        ].extend(lookup_abbr('PHYS', filter_degree='BS'))
+        ] + lookup_abbr('PHYS', filter_degree='BS')
     },
     'BS in Biology': {
         'Biology Lab': [
@@ -136,7 +136,7 @@ words = {
     'BS in Biomedical Engineering': {
         'BMED Depth Electives': [
             'BMED 2699'
-        ].extend(lookup_abbr('BMED', start=3000, end=4999))
+        ] + lookup_abbr('BMED', start=3000, end=4999)
     },
     'BS in Business Administration': {
         'Non-MGT Electives': [
@@ -294,8 +294,8 @@ words = {
         ]
     },
     'BS in Chemistry': {
-        'CHEM 4000- or 6000-level Electives': lookup_abbr('CHEM', start=4000, end=4999).extend(
-            lookup_abbr('CHEM', start=6000, end=6999)),
+        'CHEM 4000- or 6000-level Electives': lookup_abbr('CHEM', start=4000, end=4999) + 
+            lookup_abbr('CHEM', start=6000, end=6999),
         'Biochemistry Lab Elective': [
             'BIOL 3450', 
             'BIOL 3451', 
@@ -303,10 +303,10 @@ words = {
             'BIOL 3381', 
             'CHEM 4582'
         ],
-        'CHEM 4000- or 6000-level': lookup_abbr('CHEM', start=4000, end=4999).extend(
-            lookup_abbr('CHEM', start=6000, end=6999)),
-        '3000-level Technical Electives': lookup_abbr('CHBE', start=3000, end=3999).extend(
-            lookup_abbr('MSE', start=3000, end=3999))
+        'CHEM 4000- or 6000-level': lookup_abbr('CHEM', start=4000, end=4999) + 
+            lookup_abbr('CHEM', start=6000, end=6999),
+        '3000-level Technical Electives': lookup_abbr('CHBE', start=3000, end=3999) + 
+            lookup_abbr('MSE', start=3000, end=3999)
     },
     'BS in Civil Engineering': {
         'Ethics Requirement (Civil Engineering approved)': [
@@ -342,6 +342,44 @@ words = {
             'PHYS 2021', 
             'PHYS 2022', 
             'PHYS 2213'
+        ],
+        'Ethics Requirement': get_core_area('Ethics'),
+        'Probability/Statistics': [
+            'CEE 3770',
+            'ISYE 3770',
+            'MATH 3670',
+            'ECE 3077'
+        ],
+        'Professional Communications': [
+            'ECE 3005',
+            'ECE 3006'
+        ]
+    },
+    'BS in Electrical Engineering': {
+        'Science Elective': [
+            'APPH 3751',
+            'BIOL 1510', 
+            'BIOL 1520', 
+            'BIOL 3751', 
+            'CHEM 1212K', 
+            'CHEM 1315', 
+            'EAS 1600', 
+            'EAS 1601', 
+            'EAS 2600', 
+            'PHYS 2021', 
+            'PHYS 2022', 
+            'PHYS 2213'
+        ],
+        'Ethics Requirement': get_core_area('Ethics'),
+        'Probability/Statistics': [
+            'CEE 3770',
+            'ISYE 3770',
+            'MATH 3670',
+            'ECE 3077'
+        ],
+        'Professional Communications': [
+            'ECE 3005',
+            'ECE 3006'
         ]
     }
 }

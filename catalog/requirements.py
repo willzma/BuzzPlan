@@ -71,9 +71,12 @@ def get_reqs(degree_dom, no_reqs_tab=False, original_degree_name=None):
                     if content is not None and content[0].strip() == 'Total Credit Hours':
                         last = True
             node_queue.extend(node)
-        if is_or and comment:
-            raise ValueError("Probably want to look at this, chief.")
-        if is_or: # Append to the previous requirement
+        if areaheader and not comment and not last:
+            if hours != (-1):
+                reqs_dict['requirements'].append({'codes': [], 'hours': hours})
+        elif last and not code: # Set number of credit hours for the degree/thread/concentration
+            reqs_dict['total_credit_hours'] = hours
+        elif is_or and code: # Append to the previous requirement
             reqs_dict['requirements'][-1]['codes'].append(code)
         elif comment and not code:
             # Search manually written annotations/additions to fill in most unstructured data
@@ -93,15 +96,10 @@ def get_reqs(degree_dom, no_reqs_tab=False, original_degree_name=None):
                 reqs_dict['requirements'].append({'codes': [any_encodings], 'hours': hours})
             else:
                 reqs_dict['requirements'].append({'codes': [], 'hours': hours}) # Safe (could be empty)
-        elif blockindent: # Append to the previous requirement (note that this has lesser priority)
+        elif blockindent and code: # Append to the previous requirement (note that this has lesser priority)
             reqs_dict['requirements'][-1]['codes'].append(code)
-        elif last: # Set number of credit hours for the degree/thread/concentration
-            reqs_dict['total_credit_hours'] = hours
         else:
-            if areaheader:
-                if hours != (-1):
-                    reqs_dict['requirements'].append({'codes': [], 'hours': hours})
-            elif not code:
+            if not code:
                 log.warning("Skipped table row with no course code {}".format(html.tostring(row)))
             else:
                 if hours == (-1):

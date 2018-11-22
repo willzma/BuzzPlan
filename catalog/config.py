@@ -16,10 +16,21 @@ catalog_url = 'http://catalog.gatech.edu'
 courses_href = '/coursesaz/'
 search_href = '/search/?P='
 
-unique_abbrs = ['HUM', 'SS']
-unique_abbr_hrefs = {
-    'HUM' : ('/academics/undergraduate/core-curriculum/core-area-c/', 1),
-    'SS' : ('/academics/undergraduate/core-curriculum/core-area-e/', 3)
+# Core requirements (and corresponding abbreviations, potentially)
+core_areas = {
+    'Constitution and History': ('/academics/undergraduate/core-curriculum/constitution-history/', '//*[@id="textcontainer"]/div/table/tbody'),
+    'A1': ('/academics/undergraduate/core-curriculum/core-area-a1/', '//*[@id="textcontainer"]/table/tbody'),
+    'A2': ('/academics/undergraduate/core-curriculum/core-area-a2/', '//*[@id="textcontainer"]/table/tbody'),
+    'B': ('/academics/undergraduate/core-curriculum/core-area-b/', '//*[@id="textcontainer"]/table[1]/tbody'),
+    'C': ('/academics/undergraduate/core-curriculum/core-area-c/', '//*[@id="textcontainer"]/table[1]/tbody'),
+    'D': ('/academics/undergraduate/core-curriculum/core-area-d/', '//*[@id="textcontainer"]/table[1]/tbody'),
+    'E': ('/academics/undergraduate/core-curriculum/core-area-e/', '//*[@id="textcontainer"]/table[3]/tbody'),
+    'Ethics': ('/academics/undergraduate/core-curriculum/ethics/', '//*[@id="textcontainer"]/div/table/tbody'),
+    'Wellness': ('/academics/undergraduate/core-curriculum/wellness-requirement/', '//*[@id="textcontainer"]/table[1]/tbody')
+}
+unique_abbrs = {
+    'HUM' : 'C',
+    'SS' : 'E'
 }
 
 excluded_programs = ['Multidisciplinary Design/Arts History'] # Breaks database (can't contain '/' in key)
