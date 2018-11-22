@@ -46,7 +46,7 @@ def get_reqs(degree_dom, no_reqs_tab=False, original_degree_name=None):
         if 'areaheader' in row_type:
             log.info("Parsing requirements for {} area".format(row_text[0]))
         code, hours, href, is_or = None, None, None, False
-        comment, blockindent, last, areaheader = None, False, False, False
+        comment, blockindent, last, areaheader = None, False, False, None
         node_queue = [row]
         while node_queue:
             node = node_queue.pop(0)
@@ -67,25 +67,27 @@ def get_reqs(degree_dom, no_reqs_tab=False, original_degree_name=None):
                 if node.attrib['class'] == 'listsum':
                     last = True
                 if 'areaheader' in node.attrib['class']:
-                    areaheader, content = True, node.xpath('.//text()')
+                    content = node.xpath('.//text()')
                     if content is not None and content[0].strip() == 'Total Credit Hours':
+                        areaheader = content[0].strip()
                         last = True
             node_queue.extend(node)
         if areaheader and not comment and not last:
             if hours != (-1):
-                reqs_dict['requirements'].append({'codes': [], 'hours': hours})
+                reqs_dict['requirements'].append({'comment': areaheader, 'codes': [], 'hours': hours})
         elif last and not code: # Set number of credit hours for the degree/thread/concentration
             reqs_dict['total_credit_hours'] = hours
         elif is_or and code: # Append to the previous requirement
             reqs_dict['requirements'][-1]['codes'].append(code)
         elif comment and not code:
+            req = {'comment': comment, 'codes': [], 'hours': hours}
             # Search manually written annotations/additions to fill in most unstructured data
             if full_degree_name in words and comment in words[full_degree_name]:
-                reqs_dict['requirements'].append({'codes': words[full_degree_name][comment], 'hours': hours})
+                req['codes'] = words[full_degree_name][comment]
             elif original_degree_name in words and comment in words[original_degree_name]:
-                reqs_dict['requirements'].append({'codes': words[original_degree_name][comment], 'hours': hours})
+                req['codes'] = words[original_degree_name][comment]
             elif comment in words['General']:
-                reqs_dict['requirements'].append({'codes': words['General'][comment], 'hours': hours})
+                req['codes'] = words['General'][comment]
             elif 'Any' in comment: # Any's are high complexity, encode to save space (just call JS API later)
                 any_encodings, any_parts = [], comment.split(',')
                 for part in any_parts:
@@ -93,9 +95,8 @@ def get_reqs(degree_dom, no_reqs_tab=False, original_degree_name=None):
                     any = '@any({})'.format(abbrs[-1])
                     any = any + '.filter({})'.format(abbrs[0]) if len(abbrs) > 1 else any
                     any_encodings.append(any)
-                reqs_dict['requirements'].append({'codes': [any_encodings], 'hours': hours})
-            else:
-                reqs_dict['requirements'].append({'codes': [], 'hours': hours}) # Safe (could be empty)
+                req['codes'] = [any_encodings]
+            reqs_dict['requirements'].append(req) # Safe default option (potentially empty codes)
         elif blockindent and code: # Append to the previous requirement (note that this has lesser priority)
             reqs_dict['requirements'][-1]['codes'].append(code)
         else:
