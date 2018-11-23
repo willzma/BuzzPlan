@@ -1,6 +1,6 @@
 
 body {
-    font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+    font-family: 'Roboto', sans-serif;
     overflow: hidden;
 }
 
@@ -185,6 +185,14 @@ body {
     padding-left: 0;
     margin: 0;
     min-width: 180px;
+}
+
+.header .header-logo {
+    letter-spacing: 2px;
+    position: relative;
+    display: table-cell;
+    vertical-align: middle;
+    padding: 0 10px;
 }
 
 .header .headercontent {

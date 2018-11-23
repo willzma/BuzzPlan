@@ -5,6 +5,7 @@
 <meta charset = "utf-8">
 
 <title>{% block title %}{% endblock %}BuzzPlan</title>
+<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
 <link rel="stylesheet" href="{{ url_for('static', filename='page.css') }}">
 <script type="text/javascript" src="{{ url_for('static', filename='base.js') }}"></script>>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -14,7 +15,7 @@
   <div class="header">
     <div class="headernodewrapper">
         <div class="headernode">
-            <div class="headercontent" style="font-size:28px">BuzzPlan</div>
+            <div class="header-logo" style="font-size:28px">BuzzPlan</div>
         </div>
         <div class="headernode" style="position: absolute; left: 200px;">
             <div class="headercontent">
@@ -31,10 +32,10 @@
             </div>
         </div>
 
-        <div class="headernode" id="registerbtn">
-            <span class="headercontent"><a href="{{ url_for('register') }}">Register</a></span>
+        <div class="headernode" id="signupbtn">
+            <span class="headercontent"><a href="{{ url_for('signup') }}">Sign Up</a></span>
         </div>
-        <div class="headernode" id="loginbtn">
+        <div class="headernode" id="signinbtn">
             <span class="headercontent"><a href="{{ url_for('signin') }}">Sign In</a></span>
         </div>
     </div>
