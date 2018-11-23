@@ -2,6 +2,7 @@ from flask import Flask, request, render_template
 from flask import session, redirect, url_for, escape
 from flask import redirect
 from flask import flash
+from firebase_admin import auth
 from firebase_admin import credentials
 from firebase_admin import db
 import argparse
@@ -26,13 +27,20 @@ def homepage():
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
     if request.method == 'POST':
-        username, password = request.form['username'], request.form['password']
+        email, password = request.form['email'], request.form['password']
         degree, program, thread = request.form['degree'], request.form['program'], request.form['thread']
-        print(username, password, degree, program, thread)
-        db.reference('users').child(username).set({
-            'username': username,
-            'password': password
-        })
+        print(email, password, degree, program, thread)
+        user = auth.create_user(
+            email=email,
+            email_verified=False,
+            password=password,
+            disabled=False
+        )
+        user_profile = {'degree': degree, 'program': program}
+        if thread and thread != 'N/A':
+            user_profile['thread'] = thread
+        db.reference('users').child(user.uid).set(user_profile)
+        print('Successfully created new user \'{}\''.format(email))
         return render_template('index.html')
     else:
         return render_template("signup.html")
@@ -41,16 +49,16 @@ def signup():
 @app.route('/signin',  methods=['GET', 'POST'])
 def signin():
     if request.method == 'POST':
-        username, password = request.form['username'], request.form['password']
-        user = db.reference('users').child(username).get()
-        if not user:
+        email, password = request.form['email'], request.form['password']
+        #user = db.reference('users').child(username).get()
+        '''if not user:
             print("User \'{}\' attempted to sign in, but that username doesn't exist!".format(username))
             return render_template('signin.html')
         if password != user['password']:
             print("User \'{}\' attempted to sign in with the wrong password.".format(username))
             return render_template('index.html')
         session['username'], session['signed-in'] = username, True
-        print("User \'{}\' successfully signed in.".format(username))
+        print("User \'{}\' successfully signed in.".format(username))'''
         return render_template('index.html')
     else:
         return render_template('signin.html')
