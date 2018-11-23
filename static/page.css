@@ -33,7 +33,7 @@ body {
 }
 
 .tabcontainer {
-    margin-left: 460px;
+    margin-left: 600px;
     margin-top: 93px;
 }
 /* Style the tab content */
@@ -704,5 +704,99 @@ body {
 
 .main-body .sidebartbl .calclasswrapperwrap.tallmode #calendarclassinfosplit {
     display: block;
+}
+
+
+
+
+
+
+.container {
+    margin-right: auto;
+    margin-left: auto;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+#workspace {
+    position: absolute;
+    top: 60px;
+    bottom: 10px;
+}
+
+.schedule-panel {
+    position: relative;
+    height: 100%;
+    display: block;
+}
+
+.calendar-panel {
+    width: 580px;
+    display: inline;
+    float: left;
+}
+
+
+.calendar {
+    font-size: 13px;
+}
+
+.table-bordered {
+    border: 0px solid black;
+}
+
+.wk-times {
+    width: 60px;
+    border-top: 1px solid black;
+    border-left: 1px solid black;
+    border-right: 1px solid black;
+}
+
+.wk-day {
+    width: 116px;
+    border-top: 1px solid black;
+    border-left: 1px solid black;
+    border-right: 1px solid black;
+}
+
+
+.wk-day-body-times {
+    text-align: right;
+    white-space: nowrap;
+    padding-right: 2px;
+}
+
+.hour:first-child {
+    border-top: 1px solid black;
+}
+
+.small {
+    font-size: 85%;
+}
+
+.hour {
+    height: 45px;
+    border-top: 1px solid black;
+    border-left:1px solid black;
+    border-right: 1px solid black;
+}
+
+
+.fixHour {
+    height: 45px;
+    border-top: 1px solid black;
+    border-left: 1px solid black;
+    border-right: 1px solid black;
+}
+
+.wk-day-body {
+    position: relative;
+    height: 100%;
+}
+
+.wk-day-body-times {
+    text-align: center;
+    white-space: nowrap;
+
 }
 

@@ -40,84 +40,152 @@
     </div>
   </div>
 
-  <div class="calclasswrapper">
-    <div id="calendarwrap", style="position: absolute; top: 100px;left: 20px;">
-        <table id="calendar", border="1">
+  <div class="container">
+    <div id="workspace">
+      <div class="schedule-panel">
+        <div class="calendar-panel">
+          <div class="calendar" calendar>
+      
+          <table class="table-bordered">
           <caption><strong>Calendar</strong></caption>
 
-          <thead>
-          <tr>
-            <td><div class="calendarClasses"></div></td>
-            <th>Monday</th>
-            <th>Tuesday</th>
-            <th>Wednesday</th>
-            <th>Thursday</th>
-            <th>Friday</th>
-          </tr>
-          </thead>
-
           <tbody>
-
-          <tr>
-            <td class="weektimes">8:00 <span class="small">am</span></td>
-            <td></td><td></td><td></td><td></td><td></td>
-          </tr>
-          <tr>
-            <td class="weektimes">9:00 <span class="small">am</span></td>
-            <td></td><td></td><td></td><td></td><td></td>
-          </tr>
-          <tr>
-            <td class="weektimes">10:00 <span class="small">am</span></td>
-            <td></td><td></td><td></td><td></td><td></td>
-          </tr>
-          <tr>
-            <td class="weektimes">11:00 <span class="small">am</span></td>
-            <td></td><td></td><td></td><td></td><td></td>
-          </tr>
-          <tr>
-            <td class="weektimes">12:00 <span class="small">pm</span></td>
-            <td></td><td></td><td></td><td></td><td></td>
-          </tr>
-          <tr>
-            <td class="weektimes">1:00 <span class="small">pm</span></td>
-            <td></td><td></td><td></td><td></td><td></td>
-          </tr>
-          <tr>
-            <td class="weektimes">2:00 <span class="small">pm</span></td>
-            <td></td><td></td><td></td><td></td><td></td>
-          </tr>
-          <tr>
-            <td class="weektimes">3:00 <span class="small">pm</span></td>
-            <td></td><td></td><td></td><td></td><td></td>
-          </tr>
-          <tr>
-            <td class="weektimes">4:00 <span class="small">pm</span></td>
-            <td></td><td></td><td></td><td></td><td></td>
-          </tr>
-          <tr>
-            <td class="weektimes">5:00 <span class="small">pm</span></td>
-            <td></td><td></td><td></td><td></td><td></td>
-          </tr>
-          <tr>
-            <td class="weektimes">6:00 <span class="small">pm</span></td>
-            <td></td><td></td><td></td><td></td><td></td>
-          </tr>
-          <tr>
-            <td class="weektimes">7:00 <span class="small">pm</span></td>
-            <td></td><td></td><td></td><td></td><td></td>
-          </tr>
-          <tr>
-            <td class="weektimes">8:00 <span class="small">pm</span></td>
-            <td></td><td></td><td></td><td></td><td></td>
+            <tr>
+              <th class="wk-times"></th>
+              <th class="wk-day">monday</th>
+              <th class="wk-day">tuesday</th>
+              <th class="wk-day">wednesday</th>
+              <th class="wk-day">thursday</th>
+              <th class="wk-day">friday</th>
             </tr>
-          <tr>
-            <td class="weektimes">9:00 <span class="small">pm</span></td>
-            <td></td><td></td><td></td><td></td><td></td>
-          </tr>
-          </tbody>
+
+            <tr>
+              <td>
+                <div class="wk-day-body wk-day-body-times">
+
+                  <div class="fixHour"><span class="hour-first-hald">8:00 </span><span class="small">am</span></div>
+                  <div class="fixHour"><span class="hour-first-hald">9:00 </span><span class="small">am</span></div>
+                  <div class="fixHour"><span class="hour-first-hald">10:00 </span><span class="small">am</span></div>
+                  <div class="fixHour"><span class="hour-first-hald">11:00 </span><span class="small">am</span></div>
+                  <div class="fixHour"><span class="hour-first-hald">12:00 </span><span class="small">pm</span></div>
+                  <div class="fixHour"><span class="hour-first-hald">1:00 </span><span class="small">pm</span></div>
+                  <div class="fixHour"><span class="hour-first-hald">2:00 </span><span class="small">pm</span></div>
+                  <div class="fixHour"><span class="hour-first-hald">3:00 </span><span class="small">pm</span></div>
+                  <div class="fixHour"><span class="hour-first-hald">4:00 </span><span class="small">pm</span></div>
+                  <div class="fixHour"><span class="hour-first-hald">5:00 </span><span class="small">pm</span></div>
+                  <div class="fixHour"><span class="hour-first-hald">6:00 </span><span class="small">pm</span></div>
+                  <div class="fixHour"><span class="hour-first-hald">7:00 </span><span class="small">pm</span></div>
+                  <div class="fixHour"><span class="hour-first-hald">8:00 </span><span class="small">pm</span></div>
+                  <div class="fixHour"><span class="hour-first-hald">9:00 </span><span class="small">pm</span></div>
+
+                </div>
+              </td>
+
+              <td>
+                <div class="wk-day-body">
+                  <div class="hour"></div>
+                  <div class="hour"></div>
+                  <div class="hour"></div>
+                  <div class="hour"></div>
+                  <div class="hour"></div>
+                  <div class="hour"></div>
+                  <div class="hour"></div>
+                  <div class="hour"></div>
+                  <div class="hour"></div>
+                  <div class="hour"></div>
+                  <div class="hour"></div>
+                  <div class="hour"></div>
+                  <div class="hour"></div>
+                  <div class="hour"></div>
+                </div>
+              </td>
+
+              <td>
+                <div class="wk-day-body">
+                  <div class="hour"></div>
+                  <div class="hour"></div>
+                  <div class="hour"></div>
+                  <div class="hour"></div>
+                  <div class="hour"></div>
+                  <div class="hour"></div>
+                  <div class="hour"></div>
+                  <div class="hour"></div>
+                  <div class="hour"></div>
+                  <div class="hour"></div>
+                  <div class="hour"></div>
+                  <div class="hour"></div>
+                  <div class="hour"></div>
+                  <div class="hour"></div>
+                </div>
+              </td>
+
+              <td>
+                <div class="wk-day-body">
+                  <div class="hour"></div>
+                  <div class="hour"></div>
+                  <div class="hour"></div>
+                  <div class="hour"></div>
+                  <div class="hour"></div>
+                  <div class="hour"></div>
+                  <div class="hour"></div>
+                  <div class="hour"></div>
+                  <div class="hour"></div>
+                  <div class="hour"></div>
+                  <div class="hour"></div>
+                  <div class="hour"></div>
+                  <div class="hour"></div>
+                  <div class="hour"></div>
+                </div>
+              </td>
+
+              <td>
+                <div class="wk-day-body">
+                  <div class="hour"></div>
+                  <div class="hour"></div>
+                  <div class="hour"></div>
+                  <div class="hour"></div>
+                  <div class="hour"></div>
+                  <div class="hour"></div>
+                  <div class="hour"></div>
+                  <div class="hour"></div>
+                  <div class="hour"></div>
+                  <div class="hour"></div>
+                  <div class="hour"></div>
+                  <div class="hour"></div>
+                  <div class="hour"></div>
+                  <div class="hour"></div>
+                </div>
+              </td>
+
+              <td>
+                <div class="wk-day-body">
+                  <div class="hour"></div>
+                  <div class="hour"></div>
+                  <div class="hour"></div>
+                  <div class="hour"></div>
+                  <div class="hour"></div>
+                  <div class="hour"></div>
+                  <div class="hour"></div>
+                  <div class="hour"></div>
+                  <div class="hour"></div>
+                  <div class="hour"></div>
+                  <div class="hour"></div>
+                  <div class="hour"></div>
+                  <div class="hour"></div>
+                  <div class="hour"></div>
+                </div>
+              </td>
+
+            </tr>
+           </tbody>
+                  
           </table>
         </div>
       </div>
+      </div>
+      </div>
+      </div>
+
 
 <div class="tabcontainer">
     <!-- Tab links -->
