@@ -4,19 +4,20 @@
 <head>
 <meta charset = "utf-8">
 <title>Sign In</title>
-
-<link rel="stylesheet" href="{{ url_for('static', filename='mystyle.css') }}">
+<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='signin.css') }}">
 </head>
 <body>
   <form method="POST" enctype="multipart/form-data">
-        <div class="signIn">
+        <div class="signin-div">
         <h1>Sign In</h1>
         <hr>
             <input type="text" placeholder="Enter your username" name="username" required>
 
-            <input type="password" placeholder="Enter your password" name="pwd" required>
+            <input type="password" placeholder="Enter your password" name="password" required>
         <hr>
-        <button type="submit" class="signin">Sign In</button>
+        <button type="submit" class="signin">Sign in</button>
         </div>
     </form> 
 </body>

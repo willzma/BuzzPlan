@@ -3,21 +3,23 @@
 <html>
 <head>
 <meta charset = "utf-8">
-<title>Register</title>
-<link rel="stylesheet" href="{{ url_for('static', filename='mystyle.css') }}">
+<title>Sign Up</title>
+<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='signup.css') }}">
 </head>
 <body>
     <form method="POST" enctype="multipart/form-data">
-        <div class="registerPart">
+        <div class="signup-div">
         <h1>New to BuzzPlan?</h1>
-        <p>Enter a username address and password to get started.</p>
+        <p>Enter a username and password to get started.</p>
         <hr>
             <h3>User Information</h3>
             <input type="text" placeholder="Enter a username" name="username" required>
 
-            <input type="password" placeholder="Enter a password" name="pwd" required>
+            <input type="password" placeholder="Enter a password" name="password" required>
 
-            <input type="password" placeholder="Confirm your password" name="pwd-confirm" required>
+            <input type="password" placeholder="Confirm your password" name="password-confirm" required>
 
             <h3>Course Planning Information</h3>
             <h4>What degree are you working towards?</h4>
@@ -50,11 +52,12 @@
         <hr>
 
         <p>By creating an account you agree to our <a href="#">Terms & Privacy</a>.</p>
-        <button type="submit" class="register">Start scheduling</button>
+        <button type="submit" class="start-scheduling">Start scheduling</button>
         </div>
     </form> 
     <script src="https://www.gstatic.com/firebasejs/5.5.9/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/5.5.9/firebase-database.js"></script>
-    <script type="text/javascript" src="{{url_for('static', filename='register.js')}}"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script type="text/javascript" src="{{url_for('static', filename='signup.js')}}"></script>
 </body>
 </html>
