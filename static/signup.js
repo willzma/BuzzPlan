@@ -30,6 +30,8 @@ function populateThreads() {
     var selection = document.getElementById("select-program").value
     var degree = document.querySelector('input[name = "degree"]:checked').value
     var threadsSelector = document.getElementById("select-thread")
+    threadsSelector.innerHTML = '<option id="default-thread" value="N/A" disabled selected>N/A</option>'
+    
     if (degree === "BS" || degree === "MS") {
         var breakdown = window.data[selection][degree]
         if (breakdown.hasOwnProperty("concentrations")) {
