@@ -95,7 +95,7 @@ def get_reqs(degree_dom, no_reqs_tab=False, original_degree_name=None):
                     any = '@any({})'.format(abbrs[-1])
                     any = any + '.filter({})'.format(abbrs[0]) if len(abbrs) > 1 else any
                     any_encodings.append(any)
-                req['codes'] = [any_encodings]
+                req['codes'] = any_encodings
             reqs_dict['requirements'].append(req) # Safe default option (potentially empty codes)
         elif blockindent and code: # Append to the previous requirement (note that this has lesser priority)
             reqs_dict['requirements'][-1]['codes'].append(code)
