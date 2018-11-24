@@ -1,3 +1,7 @@
+var CALENDAR_START = 480 // 8:00 AM in minutes
+var CALENDAR_END = 1320 // 10:00 PM in minutes
+var CALENDAR_RANGE = CALENDAR_END - CALENDAR_START
+
 function openTab(evt, tabName) {
     // Declare all variables
     var i, tabcontent, tablinks;
@@ -20,46 +24,41 @@ function openTab(evt, tabName) {
 }
 
 
-//Tue: 9:00-10:15   startTimeDiff = startTime-8:00
-//addClass(2, 60, 75, name, location)
-function addClass(day, startTimeDiff, timeSpan, name, location){
+// Tue: 9:15 - 11:15   startTime = ((9 * 60) + 15)
+// addClass(2, 60, 75, name, location)
+/**
+ * Adds a course bubble to the calendar (visually).
+ * 
+ * @param {*} code - abbreviation and course number; e.g. 'CS 6400'
+ * @param {*} day - numeric day from Monday - Friday, 0 - 4 respectively
+ * @param {*} startTime - the start time of the course in minutes
+ * @param {*} duration - duration of the course in minutes
+ * @param {*} location - location where the course is being held
+ */
+function addClass(code, day, startTime, duration, location) {
     var div1 = document.createElement('div');
     var div2 = document.createElement('div');
     var div3 = document.createElement('div');
     var div4 = document.createElement('div');
-
     div1.className = 'course-box';
     div2.className = 'course-cal pinned';
     div3.className = 'course-content';
     div4.className = 'location';
 
-    //compute time
-    var startTimePosition = startTimeDiff*75/600;
-    var height = timeSpan*75/600;
+    var startPosition = 100 * (startTime - CALENDAR_START) / CALENDAR_RANGE;
+    var height = 100 * duration / CALENDAR_RANGE;
 
-    div1.style.top = startTimePosition+'%';
-    div1.style.height = height+'%';
+    div1.style.top = startPosition + '%';
+    div1.style.height = height + '%';
     div2.style.backgroundColor = 'red';
     div2.style.borderColor = 'red';
 
-
-    div3.innerText = name;
+    div3.innerText = code;
     div4.innerText = location;
 
     div2.appendChild(div3);
     div2.appendChild(div4);
     div1.appendChild(div2);
 
-    document.getElementsByClassName('wk-day-body')[day].appendChild(div1);
- 
+    document.getElementsByClassName('week-day-body-col')[day].appendChild(div1);
 }
-
-
-
-
-// <div class="course-box" style="top: 10%; height: 5.95238%;">
-//     <div class="course-cal pinned" style="background-color: rgb(242, 121, 218); border-color: rgb(242, 121, 218);">
-//         <div class="course-content">ARBC - 1002</div>
-//         <div class="location">Engr Science &amp; Mech G8</div>
-//     </div>
-// </div>

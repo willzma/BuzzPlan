@@ -1,0 +1,71 @@
+.calendar {
+    font-size: 13px;
+}
+
+.table-bordered {
+    border: 0px solid black;
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+.week-day-times {
+    width: 60px;
+    border-top: 1px solid black;
+    border-left: 1px solid black;
+}
+
+.week-day-body {
+    width: 116px;
+    border-top: 1px solid black;
+    border-left: 1px solid black;
+}
+
+.week-day-right {
+    width: 116px;
+    border-top: 1px solid black;
+    border-left: 1px solid black;
+    border-right: 1px solid black;
+}
+
+.week-day-times-col {
+    width: 60px;
+    text-align: center;
+    white-space: nowrap;
+}
+
+.hour {
+    height: 40px;
+    border-top: 1px solid black;
+    border-left: 1px solid black;
+}
+
+.bottom-hour {
+    height: 40px;
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+    border-left: 1px solid black;
+}
+
+.small {
+    font-size: 85%;
+}
+
+.week-day-body-col {
+    position: relative;
+    height: 100%;
+}
+
+.right-hour {
+    height: 40px;
+    border-top: 1px solid black;
+    border-left: 1px solid black;
+    border-right: 1px solid black;
+}
+
+.bottom-right-hour {
+    height: 40px;
+    border-top: 1px solid black;
+    border-bottom: 1px solid black;
+    border-left: 1px solid black;
+    border-right: 1px solid black;
+}

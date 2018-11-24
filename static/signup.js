@@ -11,7 +11,7 @@ function initDB(){
     return app.database()
 }
 
-function populate_programs(db) {
+function populatePrograms(db) {
     var select = document.getElementById("select-program")
     db.ref('catalog').once('value').then(function(snapshot) {
         var keys = Object.keys(snapshot.val())
@@ -26,10 +26,10 @@ function populate_programs(db) {
     });
 }
 
-function populate_threads() {
+function populateThreads() {
     var selection = document.getElementById("select-program").value
     var degree = document.querySelector('input[name = "degree"]:checked').value
-    var threads_selector = document.getElementById("select-thread")
+    var threadsSelector = document.getElementById("select-thread")
     if (degree === "BS" || degree === "MS") {
         var breakdown = window.data[selection][degree]
         if (breakdown.hasOwnProperty("concentrations")) {
@@ -39,7 +39,7 @@ function populate_threads() {
                 var elem = document.createElement("option")
                 elem.textContent = opt
                 elem.value = opt
-                threads_selector.appendChild(elem)
+                threadsSelector.appendChild(elem)
             }
         } else if (breakdown.hasOwnProperty("threads")) {
             var threads = Object.keys(breakdown["threads"])
@@ -48,7 +48,7 @@ function populate_threads() {
                 var elem = document.createElement("option")
                 elem.textContent = opt
                 elem.value = opt
-                threads_selector.appendChild(elem)
+                threadsSelector.appendChild(elem)
             }
         }
     }
@@ -56,5 +56,5 @@ function populate_threads() {
 
 window.onload = function() {
     window.db = initDB()
-    populate_programs(db)
+    populatePrograms(db)
 };
