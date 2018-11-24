@@ -12,6 +12,14 @@ function initDB(){
     return app.database()
 }
 
+function prepareCatalogData(db, major, degree){
+	var data_promise = db.ref('/catalog').child(major).child(degree).once('value')
+	.then( function (value){
+		return value.val()
+	})
+	return data_promise
+}
+
 function preparePrerequisiteData(db, course_name){
 	var data_promise = db.ref('/prerequisite_map').child(course_name).once('value')
 	.then( function(value) {
@@ -46,4 +54,10 @@ function getClassbyIdentifier(db, identifier){
 	return data_promise
 }
 
-//function 
+function getDatabyKey(db, path, key){
+	var data_promise = db.ref(path).child(key).once('value')
+	.then( function (value){
+		return value.val()
+	})
+	return data_promise
+}

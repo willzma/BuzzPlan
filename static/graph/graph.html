@@ -23,15 +23,11 @@
 
 <script>
     var db = initDB();
-    var course_name = 'MATH 4320';
-    
-    var data_promise = preparePrerequisiteData(db, course_name)
-    var course_taken = new Set(['MATH 15X2', 'MATH 1522'])
+    var course_name = 'CS 7641';
+    var course_history = new Set(['MATH 15X2', 'MATH 1522'])
+    var container_id = 'mynetwork'
 
-    data_promise.then( function (course_pre){
-
-        creat_graph('mynetwork', course_name, course_pre, course_taken, db)
-    })
+    show_prerequisites(container_id, course_name, course_history, db)
 
     // var course_pre = {'MATH 4320': {'courses': ['MATH 2401',
     //                                             'MATH 2411',
@@ -85,7 +81,7 @@
     //                                             'MATH 15X2',
     //                                             'MATH 1X52'],
     //                                 'type': 'or'}}
-    //network = creat_graph('mynetwork', course_name, course_pre, course_taken)
+    //network = creat_graph('mynetwork', course_name, course_pre, course_taken, db)
 </script>
 </body>
 </html>

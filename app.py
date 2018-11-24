@@ -20,7 +20,7 @@ firebase_admin.initialize_app(cred, {'databaseURL': "https://buzzplan-d333f.fire
 
 @app.route('/')
 def homepage():
-    return render_template('index.html')
+    return render_template('index.html', username='#')
 
 
 @app.route('/signup', methods=['GET', 'POST'])
@@ -31,9 +31,12 @@ def signup():
         print(username, password, degree, program, thread)
         db.reference('users').child(username).set({
             'username': username,
-            'password': password
+            'password': password,
+            'degree': degree,
+            'program': program,
+            'thread': thread
         })
-        return render_template('index.html')
+        return render_template('index.html', username=username)
     else:
         return render_template("signup.html")
 
@@ -48,10 +51,10 @@ def signin():
             return render_template('signin.html')
         if password != user['password']:
             print("User \'{}\' attempted to sign in with the wrong password.".format(username))
-            return render_template('index.html')
+            return render_template('signin.html')
         session['username'], session['signed-in'] = username, True
         print("User \'{}\' successfully signed in.".format(username))
-        return render_template('index.html')
+        return render_template('index.html', username=username)
     else:
         return render_template('signin.html')
 

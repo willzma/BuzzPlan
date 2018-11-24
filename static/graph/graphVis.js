@@ -1,3 +1,10 @@
+function show_prerequisites(container_id, course_name, course_history, db){
+    preparePrerequisiteData(db, course_name)
+    .then( function (course_pre){
+        creat_graph(container_id, course_name, course_pre, course_history, db);
+    })
+}
+
 function creat_graph(container_id, course_name, course_pre, course_taken, db){
     var nodes = []
     var start = { id: course_name, 
@@ -41,9 +48,13 @@ function creat_graph(container_id, course_name, course_pre, course_taken, db){
             click_class = nodes.get(params['nodes'][0])
         }
 
-        if (!click_class['on'])
+        if (!click_class['on']){
             show(click_class, nodes, edges)
-        else{
+            if(click_class.hasOwnProperty('cut_branches')){
+                console.log(click_class['cut_branches'])
+            }
+
+        }else{
             recursive_hide(click_class, nodes, edges)
             click_class['on'] = false
             nodes.update(click_class)
@@ -92,11 +103,13 @@ function show(click_class, nodes, edges){
 
     var n_nodes = nodes.get(click_class['next_level_node'])
     var n_edges = edges.get(click_class['next_level_edge'])
+
     for (var i = 0; i < n_nodes.length; i ++){
         n_nodes[i]['hidden'] = false
         n_nodes[i]['inDegree'] += 1
     }
     nodes.update(n_nodes)
+
     for (var i = 0; i < n_edges.length; i ++){
         n_edges[i]['hidden'] = false
     }
@@ -114,10 +127,8 @@ function recursive_hide(cls, nodes, edges){
         return
     }
 
-
     var n_nodes = nodes.get(cls['next_level_node'])
     var n_edges = edges.get(cls['next_level_edge'])
-
 
     for (var i = 0; i < n_edges.length; i ++){
         n_edges[i]['hidden'] = true
@@ -135,7 +146,6 @@ function recursive_hide(cls, nodes, edges){
     }
     nodes.update(n_nodes)
 
-
     for (var i = 0; i < next_update.length; i++){
         recursive_hide(next_update[i], nodes, edges)
         nodes.update({id: next_update[i]['id'], 
@@ -145,8 +155,6 @@ function recursive_hide(cls, nodes, edges){
     
 
 }
-
-
 
 function recursive_build(cur_class, nodes, edges, course_pre, course_taken){
     var next_level = build(nodes.get(cur_class), nodes, edges, course_pre, course_taken)
@@ -165,9 +173,13 @@ function build(class_node, nodes, edges, course_pre, course_taken){
     }
 
     var cls_pre = course_pre[class_node['label']]
+    var first_list = []
+
     for (var pre in cls_pre['courses']){
         if (typeof cls_pre['courses'][pre] === 'string'){
             next_level.push(cls_pre['courses'][pre])
+            if (cls_pre['type'] == 'or') first_list.push(cls_pre['courses'][pre])
+
             var edge_id = class_node['id'] + '->' + cls_pre['courses'][pre]
             next_level_edge.push(edge_id)
 
@@ -192,8 +204,11 @@ function build(class_node, nodes, edges, course_pre, course_taken){
             if (nest_pre['type'] == 'and') inter_color = true
             else inter_color = false
 
+            var second_list = []
             for (var sub_pre in nest_pre['courses']){
                 next_level.push(nest_pre['courses'][sub_pre])
+                second_list.push(nest_pre['courses'][sub_pre])
+
                 var edge_id = tmp_id + '->' + nest_pre['courses'][sub_pre]
                 next_level_edge.push(edge_id)
 
@@ -207,9 +222,10 @@ function build(class_node, nodes, edges, course_pre, course_taken){
                               nodes, edges, 1, green)
 
             }
+            first_list.push(second_list)
 
             if (inter_color){
-                inter_node['color'] = 'green'
+                inter_node['color'] = color_style['green']
                 nodes.update(inter_node)
             }
 
@@ -219,6 +235,29 @@ function build(class_node, nodes, edges, course_pre, course_taken){
                   next_level_node: next_level, 
                   next_level_edge: next_level_edge,
                   build: true})
+
+    // This part still haven't Done
+    // if (cls_pre['type'] == 'or') {
+    //     var all = first_list.flat()
+
+    //     for (var i = 0; i < first_list.length; i++){
+    //         if (typeof first_list[i] === 'string'){
+    //             nodes.update({id: first_list[i], cut_branches: all})
+    //         }else{
+    //             var second_all = first_list.slice(0, i).concat(first_list.slice(i + 1, first_list.length)).flat()
+
+    //             for (var j = 0; j < first_list[i].length; j++){
+    //                 nodes.update({id: first_list[i][j], cut_branches: second_all})
+    //             }
+    //         }
+    //     }
+    // }else {
+    //     for (var i = 0; i < first_list.length; i++){
+    //         for (var j = 0; j < first_list[i].length; j++){
+    //             nodes.update({id: first_list[i][j], cut_branches: first_list[i]})
+    //         }
+    //     }
+    // }
     return next_level
 }
 

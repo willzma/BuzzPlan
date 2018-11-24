@@ -62,3 +62,45 @@ function addClass(code, day, startTime, duration, location) {
 
     document.getElementsByClassName('week-day-body-col')[day].appendChild(div1);
 }
+function testLoad(){
+    console.log(window.userData);
+}
+
+window.onload = function() {
+    window.db = initDB();
+    if (username != '#'){
+        getDatabyKey(db, 'users', username)
+        .then(function (value){
+            window.userData = value;
+            if (!window.userData.hasOwnProperty('courseHistory')){
+                window.userData['courseHistory'] = new Set([]);
+            }else{
+                window.userData['courseHistory'] = new Set(window.userData['courseHistory']);
+            }
+
+            document.getElementById('signupbtn').remove();
+            document.getElementById('signinbtn').remove();
+
+            var userElement = document.createElement('div');
+            userElement.setAttribute('class' ,'headernode');
+            userElement.setAttribute('id', 'usergreeting');
+
+            var span = document.createElement('span');
+            span.setAttribute('class', 'headercontent');
+            span.appendChild(document.createTextNode('Hello! ' + window.userData['username']));
+            userElement.appendChild(span);
+
+            document.getElementById('headerdiv').appendChild(userElement);
+
+            // TODO:
+            // 1. Show the previous schedule
+            // 2. init graph
+
+            var course_name = 'CS 7641';
+            var container_id = 'graph-content'
+
+            show_prerequisites(container_id, course_name, window.userData['courseHistory'], db)
+        });
+    }
+};
+
