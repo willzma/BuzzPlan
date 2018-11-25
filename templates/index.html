@@ -7,9 +7,8 @@
   <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
   <link rel="stylesheet" href="{{ url_for('static', filename='page.css') }}">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-
   <script src="https://www.gstatic.com/firebasejs/5.5.9/firebase-app.js"></script>
- <script src="https://www.gstatic.com/firebasejs/5.5.9/firebase-database.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/5.5.9/firebase-database.js"></script>
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.min.js"></script>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.min.css" rel="stylesheet" type="text/css" />
 </head>
@@ -41,10 +40,10 @@
         </div>
 
         <div class="headernode" id="signupbtn">
-            <span class="headercontent"><a href="{{ url_for('signup') }}">Sign Up</a></span>
+            <a class="headercontent" href="{{ url_for('signup') }}">Sign Up</a>
         </div>
         <div class="headernode" id="signinbtn">
-            <span class="headercontent"><a href="{{ url_for('signin') }}">Sign In</a></span>
+            <a class="headercontent" href="{{ url_for('signup') }}">Sign In</a>
         </div>
     </div>
   </div>
@@ -182,16 +181,33 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='tab-panel.css') }}">
       <!-- Tab links -->
       <div class="tabs">
-        <button class="tablink" onclick="openTab(event, 'selection')">Course Select</button>
+        <button class="tablink" onclick="openTab(event, 'selection')">Courses</button>
         <button class="tablink" onclick="openTab(event, 'graph')">Graph</button>
         <button class="tablink" onclick="openTab(event, 'detail')">Detail</button>
       </div>
     
       <!-- Tab content -->
       <div id="selection" class="tabcontent">
-        <div id="tabcontent-1">
-          <h3>Course Select</h3>
-          <p>Supposed to demo function of selecting course.</p>
+        <div id="courses-content">
+          <link rel="stylesheet" href="{{ url_for('static', filename='courses.css') }}">
+          <script type="text/javascript" src="{{ url_for('static', filename='courses.js') }}"></script>
+          <div class="course-display">
+
+          </div>
+          <div class="dropdown">
+          <button onclick="showSubjects()" class="dropdown-button">select subject...</button>
+            <div id="subject-list" class="dropdown-content">
+              <input type="text" id="search-subject" onkeyup="filterSubjects()">
+            </div>
+          </div>
+          <div id="course-dropdown" class="dropdown" style="display: none;">
+          <button onclick="showCourses()" class="dropdown-button">select course...</button>
+            <div id="course-list" class="dropdown-content">
+            </div>
+          </div>
+          <div id="course-sections" style="display: none;">
+            
+          </div>
         </div>
       </div>
       <div id="graph" class="tabcontent">
