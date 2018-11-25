@@ -209,10 +209,3 @@ function addClass(code, day, startTime, duration, location) {
 
     document.getElementsByClassName('week-day-body-col')[day].appendChild(div1);
 }
-
-window.onload = function() {
-    window.courses = []
-    window.db = initDB()
-    window.ALREADY_POPULATED = false
-    getSubjects()
-}

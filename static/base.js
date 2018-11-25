@@ -28,6 +28,8 @@ function addCatalogOption(){
                                                  window.userData['degree'], 
                                                  window.userData['thread'])
     catalog.then(function (value){
+
+        console.log(value)
         var selector = document.getElementById('requirement-select')
         var default_option = document.createElement('option')
         default_option.setAttribute('data-content', 'N/A')
@@ -82,6 +84,10 @@ function updateGraph(){
 
 window.onload = function() {
     window.db = initDB();
+    window.courses = []
+    window.ALREADY_POPULATED = false
+    getSubjects()
+    
     if (username != '#'){
         getDatabyKey(db, 'users', username)
         .then(function (value){
