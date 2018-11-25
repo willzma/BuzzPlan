@@ -45,7 +45,7 @@ watchlist = [
     'Bachelor of Business Administration - Strategy and Innovation' # no consistency in table data
 ]
 
-# Requirements tables are directly on the main page when linked (typically under a tab)
+# Requirements tables are directly on the main page when linked (usually under a tab)
 no_reqs_tabs = ['Mathematics']
 
 supported_degrees = ['BS', 'MS']

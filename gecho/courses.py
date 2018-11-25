@@ -131,6 +131,25 @@ def lookup_abbr(abbr, filter_abbr=None, filter_degree=None, start=1000, end=9999
     return results
 
 
+def get_all_abbrs():
+    '''
+    Gets all course abbreviations with their associated subject names.
+    e.g. {'CS': 'Computer Science', 'ECE': 'Electrical and Computer Engineering'}
+    '''
+    courses = html.fromstring(requests.get(catalog_url + courses_href).content).xpath('//*[@id="atozindex"]')[0]
+    abbrs, node_queue = {}, [courses]
+    while node_queue:
+        node = node_queue.pop(0)
+        if 'href' in node.attrib:
+            subject = node.xpath('.//text()')[0]
+            cutoff_index = subject.index('(')
+            name, abbr = subject[0:cutoff_index].strip(), subject[cutoff_index + 1:-1].strip()
+            if abbr is not 'HUM' and abbr is not 'SS':
+                abbrs[abbr] = name
+        node_queue.extend(node)
+    return abbrs
+
+
 def get_core_area(area):
     if area not in core_areas.keys():
         raise ValueError('Core area {} doesn\'t exist'.format(area))
@@ -143,3 +162,4 @@ def get_core_area(area):
 #print(lookup_abbr('HUM', filter_abbr='LMC'))
 #print(lookup_abbr('FREN', start=3000, end=4999))
 #print(get_core_area('Constitution and History'))
+#print(get_all_abbrs())
