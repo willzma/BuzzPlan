@@ -66,6 +66,63 @@ function testLoad(){
     console.log(window.userData);
 }
 
+function addCatalogOption(){
+    var catalog = prepareCatalogData(db, window.userData['program'], 
+                                                 window.userData['degree'], 
+                                                 window.userData['thread'])
+    catalog.then(function (value){
+        var selector = document.getElementById('requirement-select')
+        var default_option = document.createElement('option')
+        default_option.setAttribute('data-content', 'N/A')
+        selector.appendChild(default_option)
+
+        for (var i = 0; i < value['requirements'].length; i++){
+            req = value['requirements'][i]
+            if (req.hasOwnProperty('codes')){
+                var group = document.createElement('optgroup')
+
+                var set = new Set()
+                for (var j = 0; j < req['codes'].length; j++){
+                    var req_id = req['codes'][j]
+                    if (set.has(req_id)) continue
+                    set.add(req_id)
+                    if (req_id.slice(0, 4) === '@any')
+                        req_id = 'Any course from ' + req_id.slice(5, -1)
+
+                    var option = document.createElement('option')
+                    if (window.userData['courseHistory'].has(req_id)){
+                        option.setAttribute('data-content', '<i class="far fa-check" style="color: green;"></i> ' + req_id)
+                    }else{
+                        option.setAttribute('data-content', '<i class="far fa-times" style="color: red;"></i> ' + req_id)
+                    }
+
+                    option.setAttribute('value', req_id)
+                    group.appendChild(option)
+                }
+                group.setAttribute('label', 'Hours: ' + req['hours'])
+                selector.appendChild(group)
+            }
+        }
+        $('.selectpicker').selectpicker('refresh');
+    })
+}
+
+function searchCourse(){
+    var search = document.getElementById('graph-search')
+    getRawData(window.db, '/Courses', search.value)
+    .then( function (value){
+        if (value.exists())
+            show_prerequisites('graph-content', search.value, window.userData['courseHistory'], window.db)
+        else
+            console.log("not exist");
+    })
+}
+
+function updateGraph(){
+    var course_name = document.getElementById('requirement-select').value
+    show_prerequisites('graph-content', course_name, window.userData['courseHistory'], window.db)
+}
+
 window.onload = function() {
     window.db = initDB();
     if (username != '#'){
@@ -77,6 +134,8 @@ window.onload = function() {
             }else{
                 window.userData['courseHistory'] = new Set(window.userData['courseHistory']);
             }
+
+            window.userData['courseHistory'] = new Set(['MATH 1111', 'MATH 1553']);
 
             document.getElementById('signupbtn').remove();
             document.getElementById('signinbtn').remove();
@@ -96,10 +155,10 @@ window.onload = function() {
             // 1. Show the previous schedule
             // 2. init graph
 
-            var course_name = 'CS 7641';
-            var container_id = 'graph-content'
+            var course_name = 'MATH 4320';
 
-            show_prerequisites(container_id, course_name, window.userData['courseHistory'], db)
+            addCatalogOption()
+            //show_prerequisites('graph-content', course_name, window.userData['courseHistory'], window.db)
         });
     }
 };

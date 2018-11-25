@@ -206,3 +206,8 @@ html, body {
     border-radius: 4px;
     margin: 1px;
 }
+
+.column-in-center{
+    float: none;
+    margin: 0 auto;
+}

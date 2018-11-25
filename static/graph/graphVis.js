@@ -16,7 +16,7 @@ function creat_graph(container_id, course_name, course_pre, course_taken, db){
                   build: false,
                   }
 
-    if (course_name in course_taken) start['color'] = color_style['green']
+    if (course_taken.has(course_name)) start['color'] = color_style['green']
     else start['color'] = color_style['red']
 
     nodes.push(start)

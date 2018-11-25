@@ -12,8 +12,8 @@ function initDB(){
     return app.database()
 }
 
-function prepareCatalogData(db, major, degree){
-	var data_promise = db.ref('/catalog').child(major).child(degree).once('value')
+function prepareCatalogData(db, major, degree, thread){
+	var data_promise = db.ref('/catalog').child(major).child(degree).child('threads').child(thread).once('value')
 	.then( function (value){
 		return value.val()
 	})
@@ -25,6 +25,8 @@ function preparePrerequisiteData(db, course_name){
 	.then( function(value) {
 		var all_promise = []
 		var cls_list = value.val()
+		if (cls_list == null) return {}
+
 		var prerequiiste_ref = db.ref('/Prerequisites')
 		for (var i = 0; i < cls_list.length; i++){
 			all_promise.push(prerequiiste_ref.child(cls_list[i]).once('value')
@@ -47,17 +49,19 @@ function preparePrerequisiteData(db, course_name){
 }
 
 function getClassbyIdentifier(db, identifier){
-	var data_promise = db.ref('/Courses').child(identifier).once('value')
+	return getRawData(db, '/Courses', identifier)
 	.then( function (value) {
 		return value.val()
 	})
-	return data_promise
 }
 
 function getDatabyKey(db, path, key){
-	var data_promise = db.ref(path).child(key).once('value')
+	return getRawData(db, path, key)
 	.then( function (value){
 		return value.val()
 	})
-	return data_promise
+}
+
+function getRawData(db, path, key){
+	return db.ref(path).child(key).once('value')
 }
