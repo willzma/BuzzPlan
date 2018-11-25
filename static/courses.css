@@ -1,0 +1,78 @@
+.dropdown-button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 16px;
+    width: 100%;
+    font-size: 14px;
+    border: none;
+    cursor: pointer;
+}
+
+.dropdown-button:hover, .dropdown-button:focus {
+    background-color: #3e8e41;
+}
+
+#search-subject {
+    background-image: url('searchicon.png');
+    background-position: 6px 6px;
+    background-repeat: no-repeat;
+    font-size: 14px;
+    width: 100%;
+    padding: 4px;
+    padding-left: 28px;
+    border: none;
+    border-bottom: 1px solid #ddd;
+    overflow: auto;
+    overflow-x: hidden;
+}
+
+#search-subject:focus {outline: 3px solid #ddd;}
+
+#search-course {
+    background-image: url('searchicon.png');
+    background-position: 6px 6px;
+    background-repeat: no-repeat;
+    font-size: 14px;
+    width: 100%;
+    padding: 4px;
+    padding-left: 28px;
+    border: none;
+    border-bottom: 1px solid #ddd;
+    overflow: auto;
+    overflow-x: hidden;
+}
+
+#search-course:focus {outline: 3px solid #ddd;}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+    padding-bottom: 12px;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f6f6f6;
+    min-width: 230px;
+    width: 100%;
+    max-height: 400px;
+    overflow: auto;
+    overflow-x: hidden;
+    border: 1px solid #ddd;
+    z-index: 1;
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 4px;
+    font-size: 14px;
+    width: 100%;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown a:hover {background-color: #ddd;}
+
+.show {display: block;}

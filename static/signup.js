@@ -1,16 +1,3 @@
-function initDB(){
-	var config = {
-        apiKey: "AIzaSyA3i7m9Y2GDih3V4HS4vywuE94kRj6rhE0",
-        authDomain: "buzzplan-d333f.firebaseapp.com",
-        databaseURL: "https://buzzplan-d333f.firebaseio.com",
-        projectId: "buzzplan-d333f",
-        storageBucket: "buzzplan-d333f.appspot.com",
-        messagingSenderId: "572769101291"
-    };
-    var app = firebase.initializeApp(config)
-    return app.database()
-}
-
 function populatePrograms(db) {
     var select = document.getElementById("select-program")
     db.ref('catalog').once('value').then(function(snapshot) {
