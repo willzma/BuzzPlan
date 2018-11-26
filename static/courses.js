@@ -246,10 +246,11 @@ function updateSchedule(crn, code){
     if (!window.schedule.hasOwnProperty(crn)){
         window.schedule[crn] = []
         meeting_obj = window.crn2meetings[crn]
+        var color = 'rgb(' + (Math.floor(Math.random() * 256)) + ',' + (Math.floor(Math.random() * 256)) + ',' + (Math.floor(Math.random() * 256)) + ')';
         for (var i = 0; i < meeting_obj.length; i++){
             obj = meeting_obj[i]
             for (var j = 0; j < obj['days'].length; j++){
-                window.schedule[crn].push(addClass(code, obj['days'][j], obj['startTime'], obj['duration'], obj['location']))
+                window.schedule[crn].push(addClass(code, obj['days'][j], obj['startTime'], obj['duration'], obj['location'], color))
             }
         }
     }else{
@@ -312,7 +313,7 @@ function loadSchedule(crns){
  * @param {*} duration - duration of the course in minutes
  * @param {*} location - location where the course is being held
  */
-function addClass(code, day, startTime, duration, location) {
+function addClass(code, day, startTime, duration, location, color) {
     var div1 = document.createElement('div');
     var div2 = document.createElement('div');
     var div3 = document.createElement('div');
@@ -332,8 +333,10 @@ function addClass(code, day, startTime, duration, location) {
 
     div1.style.top = startPosition + '%';
     div1.style.height = height + '%';
-    div2.style.backgroundColor = 'red';
-    div2.style.borderColor = 'red';
+
+    
+    div2.style.backgroundColor = color;
+    div2.style.borderColor = color;
 
     div3.innerText = code;
     div4.innerText = location;
