@@ -193,6 +193,9 @@ function addClass(code, day, startTime, duration, location) {
     var startPosition = 100 * (startTime - CALENDAR_START) / CALENDAR_RANGE;
     var height = 100 * duration / CALENDAR_RANGE;
 
+    //remove the clicked class on calendar
+    div1.onclick = function() {document.getElementsByClassName('wk-day-body')[day].removeChild(div1);};
+
     // TODO: Add randomized colors for course bubbles (don't repeat).
 
     div1.style.top = startPosition + '%';
