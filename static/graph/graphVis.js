@@ -80,9 +80,9 @@ function course_detail(data){
     var string = ('<p>' + data['fullname'] + '</p>')
     string += ("<p>Grade Basis: " + data['grade_basis'] + '</p>')
     if (!data.hasOwnProperty('sections'))
-        string += ('<p>No section provided this semester.</p>')
+        string += ('<p>No sections provided this semester.</p>')
     else
-        string += ('<p>' + data['sections'].length.toString() + " sections provideed this semester.</p>")
+        string += ('<p>' + data['sections'].length.toString() + " sections provided this semester.</p>")
 
     return string
 
@@ -90,14 +90,14 @@ function course_detail(data){
 
 function show(click_class, nodes, edges){
     if (click_class['on']){
-        console.log('Warning: class clicked is already on...')
+        console.log('Warning: The clicked-on class is already displayed...')
         return
     }
     click_class['on'] = true
     nodes.update(click_class)
 
     if (typeof click_class['next_level_node'] == 'undefined'){
-        console.log('No futher prerequisite')
+        console.log('No further prerequisites')
         return
     }
 
@@ -118,7 +118,7 @@ function show(click_class, nodes, edges){
 
 function recursive_hide(cls, nodes, edges){
     if (!cls['on']){
-        console.log('Class clicked is already off...')
+        console.log('The clicked-on class is already hidden...')
         return
     }
 
