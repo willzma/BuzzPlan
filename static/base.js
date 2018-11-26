@@ -28,8 +28,6 @@ function addCatalogOption(){
                                                  window.userData['degree'], 
                                                  window.userData['thread'])
     catalog.then(function (value){
-
-        console.log(value)
         var selector = document.getElementById('requirement-select')
         var default_option = document.createElement('option')
         default_option.setAttribute('data-content', 'N/A')
@@ -97,6 +95,9 @@ window.onload = function() {
             }else{
                 window.userData['courseHistory'] = new Set(window.userData['courseHistory']);
             }
+            if (!window.userData.hasOwnProperty('schedule')){
+                window.userData['schedule'] = [];
+            }
 
             window.userData['courseHistory'] = new Set(['MATH 1111', 'MATH 1553']);
 
@@ -116,13 +117,18 @@ window.onload = function() {
 
             // TODO:
             // 1. Show the previous schedule
-            // 2. init graph
-
-            var course_name = 'MATH 4320';
+            window.schedule = {}
+            loadSchedule(window.userData['schedule'])
 
             addCatalogOption()
-            //show_prerequisites('graph-content', course_name, window.userData['courseHistory'], window.db)
+
         });
     }
 };
+window.onunload = function() {
+    if (username != '#'){
+        db.ref('users').child(username).child('schedule').set(Object.keys(window.schedule))
+    }
+    console.log('close')
+}
 

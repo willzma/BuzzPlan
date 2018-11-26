@@ -90,6 +90,8 @@ function getCoursesDropdown(subject) {
         var courses = Object.keys(abbrData)
         for (var i = 0; i < courses.length; i++) {
             var course = String(courses[i])
+            if (!abbrData[course].hasOwnProperty('sections')) continue
+
             var identifier = abbrData[course]['identifier']
             var name = abbrData[course]['name']
             for (var j = 0; j < identifier.length; j++) {
@@ -128,6 +130,12 @@ function filterCourses() {
     }
 }
 
+function testHover(event){
+    console.log('Hover!!')
+    
+    //el.setAttribute('on', 'true')
+}
+
 function getCourseSections(course) {
     var courseSections = document.getElementById('course-sections')
     while (courseSections.firstChild) {
@@ -136,39 +144,163 @@ function getCourseSections(course) {
     var courseList = document.getElementById('course-list')
 
     var sectionTable = document.createElement('table')
-    sectionTable.style.width = '100%'
-    sectionTable.style.border = '1px solid black'
+    sectionTable.setAttribute('class', 'table table-hover')
+
+
+    // var thread = document.createElement('thread')
+    // var trHead = document.createElement('tr')
+    // var th = document.createElement('th')
+    // th.appendChild(document.createTextNode('CRN'))
+    // trHead.appendChild(th)
+    // th = document.createElement('th')
+    // th.appendChild(document.createTextNode('Instructor'))
+    // trHead.appendChild(th)
+    // th = document.createElement('th')
+    // th.appendChild(document.createTextNode('Section'))
+    // trHead.appendChild(th)
+    // thread.appendChild(trHead)
+    // sectionTable.appendChild(thread)
+    // sectionTable.appendChild(document.createTextNode('<thead> \
+    //                                                     <tr> \
+    //                                                       <th>CRN</th> \
+    //                                                       <th>Instructor</th> \
+    //                                                       <th>Section</th> \
+    //                                                     </tr> \
+    //                                                   </thead>'))
+
+    var tbody = document.createElement('tbody')
 
     var courseData = abbrData[course]
     var sections = courseData['sections']
+    window.crn2meetings = {}
+
+
     for (var i = 0; i < sections.length; i++) {
-        var tr = sectionTable.insertRow()
+        var tr = document.createElement('tr')
+        //tr.setAttribute('onmouseover', 'testHover()')
         var section = sections[i]
-        var instructor = section['instructors'][0]
+
         var td = document.createElement('td')
-        td.appendChild(document.createTextNode(instructor))
+        td.appendChild(document.createTextNode(section['crn']))
         tr.appendChild(td)
-        var td1 = document.createElement('td')
-        td1.appendChild(document.createTextNode(section['section_id']))
-        tr.appendChild(td1)
-        var meetings = section['meetings']
-        for (var j = 0; j < meetings.length; j++) {
-            var meeting = meetings[j]
-            var td2 = document.createElement('td')
-            td2.appendChild(document.createTextNode(meeting['days']))
-            tr.appendChild(td2)
-            var days = parseDays(meeting['days'])
-            var location = section['location']
-            var rawTime = meeting['time']
-            var rawTimeDelimiter = rawTime.indexOf('-')
-            var startTime = parseTime(rawTime.substring(0, rawTimeDelimiter).trim())
-            var endTime = parseTime(rawTime.substring(rawTimeDelimiter + 1).trim())
-            var duration = endTime - startTime
+
+        if (section.hasOwnProperty('instructors') && section['instructors'].length != 0){
+            var instructor = section['instructors'][0]
+        }else{
+            var instructor = 'To Be Announced'
         }
-        courseSections.appendChild(tr)
+        var td1 = document.createElement('td')
+        td1.appendChild(document.createTextNode(instructor))
+        tr.appendChild(td1)
+
+        var td2 = document.createElement('td')
+        td2.appendChild(document.createTextNode(section['section_id']))
+        tr.appendChild(td2)
+
+        var meeting_obj = []
+        if (section.hasOwnProperty('meetings') && section['meetings'].length != 0){
+            var meetings = section['meetings']
+
+            for (var j = 0; j < meetings.length; j++) {
+                var meeting = meetings[j]
+
+                if (!meeting.hasOwnProperty('days') || !meeting.hasOwnProperty('time')){
+                    console.log('Day and time to be announced.')
+                    continue
+                }
+                var days = parseDays(meeting['days'])
+                var rawTime = meeting['time']
+                var rawTimeDelimiter = rawTime.indexOf('-')
+                var startTime = parseTime(rawTime.substring(0, rawTimeDelimiter).trim())
+                var endTime = parseTime(rawTime.substring(rawTimeDelimiter + 1).trim())
+                var duration = endTime - startTime
+
+                if (!meeting.hasOwnProperty('location')){
+                    var location = 'To Be Announced'
+                }else{
+                    var location = meeting['location']
+                }
+
+                meeting_obj.push({  days: days,
+                                    startTime: startTime,
+                                    duration: duration,
+                                    location: location})
+            }
+            //tr.setAttribute('onclick', '')
+        }
+
+        window.crn2meetings[section['crn']] = meeting_obj
+        tr.setAttribute('onclick', 'updateSchedule("' + section['crn'] + '", "' + course + '")')
+        //courseSections.appendChild(tr)
+        tbody.appendChild(tr)
     }
+    sectionTable.appendChild(tbody)
+    courseSections.appendChild(sectionTable)
+    $('.table').bootstrapTable('refresh')
+
     courseSections.style.display = 'block'
     courseList.classList.toggle('show')
+}
+
+function updateSchedule(crn, code){
+    if (!window.schedule.hasOwnProperty(crn)){
+        window.schedule[crn] = []
+        meeting_obj = window.crn2meetings[crn]
+        for (var i = 0; i < meeting_obj.length; i++){
+            obj = meeting_obj[i]
+            for (var j = 0; j < obj['days'].length; j++){
+                window.schedule[crn].push(addClass(code, obj['days'][j], obj['startTime'], obj['duration'], obj['location']))
+            }
+        }
+    }else{
+        for (var i = 0; i < window.schedule[crn].length; i++){
+            window.schedule[crn][i].remove()
+        }
+        delete window.schedule[crn]
+    }
+}
+
+function loadSchedule(crns){
+    window.crn2meetings = {}
+    for (var i = 0; i < crns.length; i++){
+        getDatabyKey(window.db, 'Courses_2019_Spring', crns[i])
+        .then( function (section){
+            var meeting_obj = []
+            if (section.hasOwnProperty('meetings') && section['meetings'].length != 0){
+                var meetings = section['meetings']
+
+                for (var j = 0; j < meetings.length; j++) {
+                    var meeting = meetings[j]
+
+                    if (!meeting.hasOwnProperty('days') || !meeting.hasOwnProperty('time')){
+                        console.log('Day and time to be announced.')
+                        continue
+                    }
+                    var days = parseDays(meeting['days'])
+                    var rawTime = meeting['time']
+                    var rawTimeDelimiter = rawTime.indexOf('-')
+                    var startTime = parseTime(rawTime.substring(0, rawTimeDelimiter).trim())
+                    var endTime = parseTime(rawTime.substring(rawTimeDelimiter + 1).trim())
+                    var duration = endTime - startTime
+
+                    if (!meeting.hasOwnProperty('location')){
+                        var location = 'To Be Announced'
+                    }else{
+                        var location = meeting['location']
+                    }
+
+                    meeting_obj.push({  days: days,
+                                        startTime: startTime,
+                                        duration: duration,
+                                        location: location})
+                }
+            }
+
+            window.crn2meetings[section['crn']] = meeting_obj
+            updateSchedule(section['crn'], section['identifier'])
+        })
+    }
+
 }
 
 /**
@@ -211,4 +343,6 @@ function addClass(code, day, startTime, duration, location) {
     div1.appendChild(div2);
 
     document.getElementsByClassName('week-day-body-col')[day].appendChild(div1);
+
+    return div1
 }
