@@ -21,10 +21,10 @@ potentially convert to text using pdftotext or something or
 other and then upload to this package/webapp to be parsed.
 '''
 
-from config import catalog_url, supported_degrees, excluded_programs, excluded_degrees, no_reqs_tabs
-from config import num_programs, num_degrees, num_degrees_with_threads, num_threads
-from requirements import get_reqs
-from utils import get_hrefs
+from gecho.config import catalog_url, supported_degrees, excluded_programs, excluded_degrees, no_reqs_tabs
+from gecho.config import num_programs, num_degrees, num_degrees_with_threads, num_threads
+from gecho.requirements import get_reqs
+from gecho.utils import get_hrefs
 from lxml import html
 import logging
 import requests

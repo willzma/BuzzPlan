@@ -3,9 +3,9 @@ Functions for massaging requirements data from catalog.gatech.edu into Python di
 Objects could help to solve the problem of multiple options for a course req.
 '''
 
-from courses import lookup_course, parse_hours
-from utils import asciify_spaces
-from words import words
+from gecho.courses import lookup_course, parse_hours
+from gecho.utils import asciify_spaces
+from gecho.words import words
 from lxml import html
 import logging
 import re

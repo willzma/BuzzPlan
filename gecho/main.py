@@ -1,5 +1,5 @@
-from catalog import scrape_raw
-from courses import get_all_abbrs
+from gecho.catalog import scrape_raw
+from gecho.courses import get_all_abbrs
 from firebase_admin import credentials
 from firebase_admin import db
 import firebase_admin

@@ -2,9 +2,9 @@
 Functions for doing course lookups in the catalog.
 '''
 
-from config import catalog_url, courses_href, search_href, unique_abbrs
-from config import core_areas, supported_degrees, degree_code_ranges
-from utils import asciify_spaces, urlify_spaces
+from gecho.config import catalog_url, courses_href, search_href, unique_abbrs
+from gecho.config import core_areas, supported_degrees, degree_code_ranges
+from gecho.utils import asciify_spaces, urlify_spaces
 from lxml import html
 import logging
 import requests

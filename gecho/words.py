@@ -3,7 +3,7 @@ Requirements sometimes (about 10% of the time) give vague words instead of an ac
 As such, encoded here is the actual meaning of some of those vague words. Effectively overrides.
 '''
 
-from courses import get_core_area, lookup_abbr
+from gecho.courses import get_core_area, lookup_abbr
 
 words = {
     'General': {

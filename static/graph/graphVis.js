@@ -123,7 +123,7 @@ function recursive_hide(cls, nodes, edges){
     }
 
     if (typeof cls['next_level_node'] == 'undefined'){
-        console.log('No futher prerequisite')
+        console.log('No further prerequisite')
         return
     }
 

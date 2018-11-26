@@ -1,3 +1,4 @@
+from gecho.courses import lookup_course
 from firebase_admin import credentials
 from firebase_admin import db
 import firebase_admin
@@ -25,4 +26,9 @@ if __name__ == '__main__':
             courses_by_abbr_dict[abbr] = {}
         if 'X' not in code:
             courses_by_abbr_dict[abbr][key] = courses[key]
+            try:
+                description = lookup_course(key)[3]
+                courses_by_abbr_dict[abbr][key]['description'] = description
+            except:
+                print(key)
     courses_by_abbr_ref.set(courses_by_abbr_dict)
