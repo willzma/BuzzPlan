@@ -14,7 +14,7 @@ function parseTime(time) {
     var timeType = time.substring(colon_index + 4)
     var hours = parseInt(time.substring(0, colon_index))
     var minutes = parseInt(time.substring(colon_index + 1, colon_index + 3))
-    if (timeType === 'pm') {
+    if (timeType === 'pm' && hours != 12) {
         hours += 12
     }
     return (60 * hours) + minutes
@@ -144,7 +144,7 @@ function getCourseSections(course) {
     var courseList = document.getElementById('course-list')
 
     var sectionTable = document.createElement('table')
-    sectionTable.setAttribute('class', 'table')
+    sectionTable.setAttribute('class', 'table table-hover')
 
 
     // var thread = document.createElement('thread')
@@ -205,6 +205,7 @@ function getCourseSections(course) {
         tr.appendChild(td2)
 
         var meeting_obj = []
+        console.log(section)
         if (section.hasOwnProperty('meetings') && section['meetings'].length != 0){
             var meetings = section['meetings']
 
@@ -240,6 +241,7 @@ function getCourseSections(course) {
                                                  meeting_obj: meeting_obj}
         tr.setAttribute('onclick', 'register("' + section['crn'] + '", "' + course + '")')
         //courseSections.appendChild(tr)
+        console.log(crn2courseData)
         tbody.appendChild(tr)
     }
     sectionTable.appendChild(tbody)
@@ -252,6 +254,7 @@ function getCourseSections(course) {
 }
 
 function register(crn, code){
+
     if (!window.schedule.hasOwnProperty(crn)){
         window.schedule[crn] = []
         window.schedule[crn].push(addDropdownSection(crn))
@@ -387,7 +390,18 @@ function addDropdownSection(crn){
 
     var innerBody = document.createElement('div')
     innerBody.setAttribute('class', 'card-body')
-    innerBody.appendChild(document.createTextNode('Show something'))
+    
+    head = document.createElement('h5')
+    head.appendChild(document.createTextNode('Description'))
+    innerBody.appendChild(head)
+
+    p = document.createElement('p')
+    if (courseData['courseInfo'].hasOwnProperty('description')){
+        p.appendChild(document.createTextNode(courseData['courseInfo']['description']))
+    }else{
+        p.appendChild(document.createTextNode(''))
+    }
+    innerBody.appendChild(p)
 
     bodyDiv.appendChild(innerBody)
     regSection.appendChild(bodyDiv)

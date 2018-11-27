@@ -86,8 +86,12 @@ window.onload = function() {
     window.ALREADY_POPULATED = false
     getSubjects()
 
+    //addLegend("legend")
+
     //httpGetAsync('https://critique.gatech.edu/course.php?id=MATH3022')
-    
+    //$.get('https://critique.gatech.edu/course.php?id=MATH3022', function (data, status){
+        //console.log(`${data}`)
+    //})
     if (username != '#'){
         getDatabyKey(db, 'users', username)
         .then(function (value){
@@ -101,7 +105,7 @@ window.onload = function() {
                 window.userData['schedule'] = [];
             }
 
-            window.userData['courseHistory'] = new Set(['MATH 1111', 'MATH 1553']);
+            window.userData['courseHistory'] = new Set(['MATH 1111', 'MATH 1553', 'CS 1301']);
 
             document.getElementById('signupbtn').remove();
             document.getElementById('signinbtn').remove();

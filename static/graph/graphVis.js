@@ -303,3 +303,28 @@ function add_node_edge(cur_name, parent_node, edge_id, edge_type, nodes, edges, 
         edges.update(edge)
     }
 }
+
+function addLegend(container_id){
+    var nodes = [{ id: 'test', 
+                  label: 'test', 
+                  shape: 'box',
+                  level: 0,
+                  inDegree: 0,
+                  on: false,
+                  build: false,
+                  color: color_style['green']
+                  }]
+
+    var nodes = new vis.DataSet(nodes)
+    var edges = new vis.DataSet([])
+    // create a network
+    var container = document.getElementById(container_id)
+
+    // provide the data in the vis format
+    var data = {
+        nodes: nodes,
+        edges: edges
+    }
+    // initialize your network!
+    var network = new vis.Network(container, data, options)
+}

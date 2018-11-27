@@ -72,7 +72,7 @@ function httpGetAsync(theUrl){
         if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
             console.log(xmlHttp.responseText);
     }
-    xmlHttp.open("GET", theUrl, true); // true for asynchronous 
+    xmlHttp.open("GET", chrome.extension.getURL(theUrl), true); // true for asynchronous 
     xmlHttp.send(null);
 }
 

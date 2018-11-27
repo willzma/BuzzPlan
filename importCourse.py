@@ -16,6 +16,17 @@ def valid_identifier(identifier):
 
 	return True
 
+def add_description():
+	course_offer = db.reference('Courses_2019_Spring').get()
+
+	for c in course_offer.keys():
+		description = db.reference('courses_by_abbr').child(course_offer[c]['school']).child(course_offer[c]['identifier']).child('description').get()
+		if not description:
+			description = ''
+
+		print(description)
+		db.reference('Courses_2019_Spring').child(c).child('description').set(description)
+
 
 def process_prerequisite(pre):
 	if 'courses' not in pre or 'type' not in pre:
@@ -199,7 +210,8 @@ if __name__ == '__main__':
 	print ()
 
 	#importData(args.filepath)
-	updatePrerequisite(args.filepath)
+	#updatePrerequisite(args.filepath)
+	add_description()
 	
 
 

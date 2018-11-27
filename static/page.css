@@ -211,3 +211,12 @@ html, body {
     float: none;
     margin: 0 auto;
 }
+
+.legend-div {
+    width: 100px;
+    height: 100px;
+    padding-right: 5px;
+    padding-bottom: 5px;
+    color: red;
+    top: 0;
+}
