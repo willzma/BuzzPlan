@@ -202,7 +202,6 @@
       <div class="tabs">
         <button class="tablink" onclick="openTab(event, 'selection')">Courses</button>
         <button class="tablink" onclick="openTab(event, 'graph')">Graph</button>
-        <button class="tablink" onclick="openTab(event, 'detail')">Detail</button>
       </div>
     
       <!-- Tab content -->
@@ -210,9 +209,11 @@
         <div id="courses-content">
           <link rel="stylesheet" href="{{ url_for('static', filename='courses.css') }}">
           <script type="text/javascript" src="{{ url_for('static', filename='courses.js') }}"></script>
-          <div class="course-display">
 
+          <div id="accordion">
+            
           </div>
+
           <div class="dropdown">
           <button onclick="showSubjects()" class="dropdown-button">select subject...</button>
             <div id="subject-list" class="dropdown-content">
@@ -224,7 +225,7 @@
             <div id="course-list" class="dropdown-content">
             </div>
           </div>
-          <div id="course-sections" style="display: none;">
+          <div class="table-wrapper-scroll-y" id="course-sections" style="display: none;">
             
           </div>
         </div>
@@ -242,12 +243,7 @@
         <div id="graph-content" style="height: 400px;">  
         </div>
       </div>
-      <div id="detail" class="tabcontent">
-        <div id="tabcontent-3">
-          <h3>Detail</h3>
-          <p>Supposed to show the course detail.</p>
-        </div>
-      </div>
+      
     </div>
     </div>
     </div>

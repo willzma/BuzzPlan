@@ -144,7 +144,7 @@ function getCourseSections(course) {
     var courseList = document.getElementById('course-list')
 
     var sectionTable = document.createElement('table')
-    sectionTable.setAttribute('class', 'table table-hover')
+    sectionTable.setAttribute('class', 'table')
 
 
     // var thread = document.createElement('thread')
@@ -169,10 +169,12 @@ function getCourseSections(course) {
     //                                                   </thead>'))
 
     var tbody = document.createElement('tbody')
+    //tbody.setAttribute('style', 'overflow-y:auto;')
 
     var courseData = abbrData[course]
     var sections = courseData['sections']
-    window.crn2meetings = {}
+    window.crn2courseData = {}
+
 
 
     for (var i = 0; i < sections.length; i++) {
@@ -184,11 +186,16 @@ function getCourseSections(course) {
         td.appendChild(document.createTextNode(section['crn']))
         tr.appendChild(td)
 
-        if (section.hasOwnProperty('instructors') && section['instructors'].length != 0){
-            var instructor = section['instructors'][0]
-        }else{
-            var instructor = 'To Be Announced'
+        var instructor = 'To Be Announced'
+        if (section.hasOwnProperty('instructors')){
+            for (var j = 0; j < section['instructors'].length; j++){
+                if (section['instructors'][j].length > 0){
+                    instructor = section['instructors'][j]
+                    break
+                }
+            }
         }
+
         var td1 = document.createElement('td')
         td1.appendChild(document.createTextNode(instructor))
         tr.appendChild(td1)
@@ -229,8 +236,9 @@ function getCourseSections(course) {
             //tr.setAttribute('onclick', '')
         }
 
-        window.crn2meetings[section['crn']] = meeting_obj
-        tr.setAttribute('onclick', 'updateSchedule("' + section['crn'] + '", "' + course + '")')
+        window.crn2courseData[section['crn']] = {courseInfo: courseData,
+                                                 meeting_obj: meeting_obj}
+        tr.setAttribute('onclick', 'register("' + section['crn'] + '", "' + course + '")')
         //courseSections.appendChild(tr)
         tbody.appendChild(tr)
     }
@@ -240,12 +248,40 @@ function getCourseSections(course) {
 
     courseSections.style.display = 'block'
     courseList.classList.toggle('show')
+    //console.log(window.crn2courseData)
 }
+
+function register(crn, code){
+    if (!window.schedule.hasOwnProperty(crn)){
+        window.schedule[crn] = []
+        window.schedule[crn].push(addDropdownSection(crn))
+        meeting_obj = window.crn2courseData[crn]['meeting_obj']
+        var color = 'rgb(' + (Math.floor(Math.random() * 256)) + ',' + (Math.floor(Math.random() * 256)) + ',' + (Math.floor(Math.random() * 256)) + ')';
+        for (var i = 0; i < meeting_obj.length; i++){
+            obj = meeting_obj[i]
+            for (var j = 0; j < obj['days'].length; j++){
+                window.schedule[crn].push(addClass(code, obj['days'][j], obj['startTime'], obj['duration'], obj['location'], color))
+            }
+        }
+    }
+}
+
+function unregister(crn){
+    if (window.schedule.hasOwnProperty(crn)){
+        for (var i = 0; i < window.schedule[crn].length; i++){
+            window.schedule[crn][i].remove()
+        }
+        delete window.schedule[crn]
+    }
+}
+
+
 
 function updateSchedule(crn, code){
     if (!window.schedule.hasOwnProperty(crn)){
+        addDropdownSection(crn)
         window.schedule[crn] = []
-        meeting_obj = window.crn2meetings[crn]
+        meeting_obj = window.crn2courseData[crn]['meeting_obj']
         var color = 'rgb(' + (Math.floor(Math.random() * 256)) + ',' + (Math.floor(Math.random() * 256)) + ',' + (Math.floor(Math.random() * 256)) + ')';
         for (var i = 0; i < meeting_obj.length; i++){
             obj = meeting_obj[i]
@@ -262,7 +298,7 @@ function updateSchedule(crn, code){
 }
 
 function loadSchedule(crns){
-    window.crn2meetings = {}
+    window.crn2courseData = {}
     for (var i = 0; i < crns.length; i++){
         getDatabyKey(window.db, 'Courses_2019_Spring', crns[i])
         .then( function (section){
@@ -297,11 +333,68 @@ function loadSchedule(crns){
                 }
             }
 
-            window.crn2meetings[section['crn']] = meeting_obj
-            updateSchedule(section['crn'], section['identifier'])
+            window.crn2courseData[section['crn']] = {courseInfo: section,
+                                                     meeting_obj: meeting_obj}
+            register(section['crn'], section['identifier'])
         })
     }
 
+}
+
+function addDropdownSection(crn){
+    courseData = window.crn2courseData[crn]
+    var registered = document.getElementById('accordion')
+
+    var regSection = document.createElement('div')
+    regSection.setAttribute('class', 'card')
+
+    var headerDiv = document.createElement('div')
+    headerDiv.setAttribute('class', 'card-header')
+    headerDiv.setAttribute('style','height: 50px;')
+    headerDiv.setAttribute('id', crn + 'heading')
+
+    var delButton = document.createElement('button')
+    delButton.setAttribute('type', 'button')
+    delButton.setAttribute('class', 'close')
+    delButton.setAttribute('aria-label', 'Close')
+    delButton.setAttribute('onclick', 'unregister("' + crn + '")')
+
+    var span = document.createElement('span')
+    span.setAttribute('aria-hidden', 'true')
+    span.innerHTML = '&times;'
+    console.log(span)
+
+    delButton.appendChild(span)
+    headerDiv.appendChild(delButton)
+
+    var button = document.createElement('button')
+    button.setAttribute('class', 'btn btn-link collapsed')
+    button.setAttribute('data-toggle', 'collapse')
+    button.setAttribute('data-target', '#body' + crn)
+    button.setAttribute('aria-expanded', 'false')
+    button.setAttribute('aria-controls', 'body' + crn)
+    button.setAttribute('style', 'padding: None;')
+    button.appendChild(document.createTextNode(courseData['courseInfo']['fullname']))
+
+    headerDiv.appendChild(button)
+    regSection.appendChild(headerDiv)
+
+    var bodyDiv = document.createElement('div')
+    bodyDiv.setAttribute('id', 'body' + crn)
+    bodyDiv.setAttribute('class', 'collapse')
+    bodyDiv.setAttribute('aria-labelledby', crn + 'heading')
+    bodyDiv.setAttribute('data-parent', '#accordion')
+
+    var innerBody = document.createElement('div')
+    innerBody.setAttribute('class', 'card-body')
+    innerBody.appendChild(document.createTextNode('Show something'))
+
+    bodyDiv.appendChild(innerBody)
+    regSection.appendChild(bodyDiv)
+
+    registered.appendChild(regSection)
+
+    return regSection
 }
 
 /**

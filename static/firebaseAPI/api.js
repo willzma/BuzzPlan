@@ -65,3 +65,15 @@ function getDatabyKey(db, path, key){
 function getRawData(db, path, key){
 	return db.ref(path).child(key).once('value')
 }
+
+function httpGetAsync(theUrl){
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.onreadystatechange = function() { 
+        if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
+            console.log(xmlHttp.responseText);
+    }
+    xmlHttp.open("GET", theUrl, true); // true for asynchronous 
+    xmlHttp.send(null);
+}
+
+

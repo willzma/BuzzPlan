@@ -76,3 +76,14 @@
 .dropdown a:hover {background-color: #ddd;}
 
 .show {display: block;}
+
+.table-wrapper-scroll-y {
+    display: block;
+    max-height: 200px;
+    overflow-y: auto;
+    -ms-overflow-style: -ms-autohiding-scrollbar;
+}
+
+.btn {
+    padding: 0;
+}

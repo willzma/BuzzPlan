@@ -85,6 +85,8 @@ window.onload = function() {
     window.courses = []
     window.ALREADY_POPULATED = false
     getSubjects()
+
+    //httpGetAsync('https://critique.gatech.edu/course.php?id=MATH3022')
     
     if (username != '#'){
         getDatabyKey(db, 'users', username)
