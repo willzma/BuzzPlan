@@ -1,3 +1,4 @@
+sep=,
 BS in Aerospace Engineering, 0, 0, 0
 MS in Aerospace Engineering, 2, 0, 2
 MS in Analytics, 3, 0, 3
@@ -39,15 +40,15 @@ Bachelor of Science in Chemistry - Polymer Option, 0, 0, 0
 Bachelor of Science in Chemistry - Pre-Health Option, 1, 0, 1
 BS in Civil Engineering, 0, 0, 0
 MS in Civil Engineering, 2, 0, 2
-Bachelor of Science in Computational Media - Intelligence - Film, Performance, & Media Studies, 1, 0, 1
+Bachelor of Science in Computational Media - Intelligence - Film Performance & Media Studies, 1, 0, 1
 Bachelor of Science in Computational Media - Intelligence - Game Studies, 1, 0, 1
 Bachelor of Science in Computational Media - Intelligence - Interaction Design & Experimental Media, 1, 0, 1
 Bachelor of Science in Computational Media - Intelligence - Narrative Studies, 1, 0, 1
-Bachelor of Science in Computational Media - Media - Film, Performance, & Media Studies, 1, 0, 1
+Bachelor of Science in Computational Media - Media - Film Performance & Media Studies, 1, 0, 1
 Bachelor of Science in Computational Media - Media - Game Studies, 1, 0, 1
 Bachelor of Science in Computational Media - Media  - Interaction Design & Experimental Media, 1, 0, 1
 Bachelor of Science in Computational Media - Media - Narrative Studies, 1, 0, 1
-Bachelor of Science in Computational Media - People - Film, Performance, & Media Studies, 1, 0, 1
+Bachelor of Science in Computational Media - People - Film Performance & Media Studies, 1, 0, 1
 Bachelor of Science in Computational Media - People - Game Studies, 1, 0, 1
 Bachelor of Science in Computational Media - People - Interaction Design & Experimental Media, 1, 0, 1
 Bachelor of Science in Computational Media - People - Narrative Studies, 1, 0, 1
@@ -100,7 +101,7 @@ Bachelor of Science in Global Economics and Modern Languages - German, 7, 0, 7
 Bachelor of Science in Global Economics and Modern Languages - Japanese, 7, 0, 7
 Bachelor of Science in Global Economics and Modern Languages - Russian, 7, 0, 7
 Bachelor of Science in Global Economics and Modern Languages - Spanish, 7, 0, 7
-BS in History, Technology, and Society, 8, 9, 17
+BS in History Technology and Society, 8, 9, 17
 MS in History and Sociology of Technology and Science, 0, 0, 0
 MS in Human-Computer Interaction, 1, 0, 1
 BS in Industrial Design, 0, 0, 0
@@ -116,21 +117,21 @@ Bachelor of Science in International Affairs and Modern Language - German, 4, 0,
 Bachelor of Science in International Affairs and Modern Language - Japanese, 7, 0, 7
 Bachelor of Science in International Affairs and Modern Language - Russian, 4, 0, 4
 Bachelor of Science in International Affairs and Modern Language - Spanish, 4, 0, 4
-Bachelor of Science in Literature, Media, and Communication - Thread: Literature & Media, 7, 2, 9
-Bachelor of Science in Literature, Media, and Communication - Thread: Literature & Communication, 7, 2, 9
-Bachelor of Science in Literature, Media, and Communication - Thread: Literature & Design, 7, 2, 9
-Bachelor of Science in Literature, Media, and Communication - Thread: Literature & Social Justice, 7, 2, 9
-Bachelor of Science in Literature, Media, and Communication - Thread: Literature & Science, Technology, and Culture, 7, 2, 9
-Bachelor of Science in Literature, Media, and Communication - Thread: Media & Communication, 7, 2, 9
-Bachelor of Science in Literature, Media, and Communication - Thread: Media & Design, 7, 2, 9
-Bachelor of Science in Literature, Media, and Communication - Thread: Media & Social Justice, 7, 2, 9
-Bachelor of Science in Literature, Media, and Communication - Thread: Media & Science, Technology and Culture, 7, 2, 9
-Bachelor of Science in Literature, Communication, and Media: Thread - Communication & Design, 7, 2, 9
-Bachelor of Science in Literature, Media, and Communication - Thread: Communication & Social Justice, 7, 2, 9
-Bachelor of Science in Literature, Media, and Communication - Thread: Communication & Science, Technology, and Culture, 7, 2, 9
-Bachelor of Science in Literature, Communication, and Media: Thread - Design & Social Justice, 7, 2, 9
-Bachelor of Science in Literature, Communication, and Media: Thread - Design & Science, Technology, & Culture, 7, 2, 9
-Bachelor of Science in Literature, Media, and Communication - Thread: Social Justice and Science, Technology, and Culture, 7, 2, 9
+Bachelor of Science in Literature Media and Communication - Thread: Literature & Media, 7, 2, 9
+Bachelor of Science in Literature Media and Communication - Thread: Literature & Communication, 7, 2, 9
+Bachelor of Science in Literature Media and Communication - Thread: Literature & Design, 7, 2, 9
+Bachelor of Science in Literature Media and Communication - Thread: Literature & Social Justice, 7, 2, 9
+Bachelor of Science in Literature Media and Communication - Thread: Literature & Science Technology and Culture, 7, 2, 9
+Bachelor of Science in Literature Media and Communication - Thread: Media & Communication, 7, 2, 9
+Bachelor of Science in Literature Media and Communication - Thread: Media & Design, 7, 2, 9
+Bachelor of Science in Literature Media and Communication - Thread: Media & Social Justice, 7, 2, 9
+Bachelor of Science in Literature Media and Communication - Thread: Media & Science Technology and Culture, 7, 2, 9
+Bachelor of Science in Literature Communication and Media: Thread - Communication & Design, 7, 2, 9
+Bachelor of Science in Literature Media and Communication - Thread: Communication & Social Justice, 7, 2, 9
+Bachelor of Science in Literature Media and Communication - Thread: Communication & Science Technology and Culture, 7, 2, 9
+Bachelor of Science in Literature Communication and Media: Thread - Design & Social Justice, 7, 2, 9
+Bachelor of Science in Literature Communication and Media: Thread - Design & Science Technology & Culture, 7, 2, 9
+Bachelor of Science in Literature Media and Communication - Thread: Social Justice and Science Technology and Culture, 7, 2, 9
 Bachelor of Science in Materials Science and Engineering - Biomaterials, 1, 1, 2
 Bachelor of Science in Materials Science and Engineering - Polymer and Fiber Materials, 1, 1, 2
 Bachelor of Science in Materials Science and Engineering - Structural and Functional Materials, 1, 1, 2
@@ -149,7 +150,7 @@ Bachelor of Science in Mechanical Engineering - Manufacturing, 1, 1, 2
 Bachelor of Science in Mechanical Engineering - Mechanics of Materials, 1, 1, 2
 Bachelor of Science in Mechanical Engineering - Micro- and Nanoengineering, 1, 1, 2
 Bachelor of Science in Mechanical Engineering - Nuclear Engineering, 1, 1, 2
-Bachelor of Science in Mechanical Engineering - Thermal, Fluid, & Energy Systems, 1, 1, 2
+Bachelor of Science in Mechanical Engineering - Thermal Fluid & Energy Systems, 1, 1, 2
 Bachelor of Science in Music Technology - General, 3, 2, 5
 Bachelor of Science in Music Technology - Electrical and Computer Engineering: Signal Processing, 2, 2, 4
 Bachelor of Science in Music Technology - Mechanical Engineering: Acoustics and Vibrations, 2, 2, 4

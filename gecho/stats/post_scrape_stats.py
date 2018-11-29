@@ -50,7 +50,7 @@ if __name__ == '__main__':
     with open ('post_scrape_stats.csv', 'w') as file:
         for course in tables_with_errors:
             print(course)
-            file.write('{}, {}, {}, {}\n'.format(course[0].replace(u'\u200b', ' '), 
+            file.write('{}, {}, {}, {}\n'.format(course[0].replace(u'\u200b', ' ').replace(',', ''), 
             course[1], 
             course[2], 
             course[1] + course[2]))
