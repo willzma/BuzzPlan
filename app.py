@@ -28,7 +28,6 @@ def signup():
     if request.method == 'POST':
         username, password = request.form['username'], request.form['password']
         degree, program, thread = request.form['degree'], request.form['program'], request.form['thread']
-        print(username, password, degree, program, thread)
         db.reference('users').child(username).set({
             'username': username,
             'password': password,
@@ -61,6 +60,5 @@ def signin():
 
 if __name__ == '__main__':
     app.secret_key = 'ce04bb09-b83c-4636-95a6-daca7e992717'
-    #app.config['SESSION_TYPE'] = 'filesystem'
     app.run(debug=True, use_reloader=True)
  

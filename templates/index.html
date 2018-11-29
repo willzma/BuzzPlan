@@ -4,40 +4,42 @@
 <head>
   <meta charset = "utf-8">
   <title>{% block title %}{% endblock %}buzzplan</title>
+  <!-- jQuery -->
+  <script src="{{ url_for('static', filename='scripts/jquery.min.js') }}"></script>
+  
+  <!-- Popper.js script -->
+  <script src="{{ url_for('static', filename='scripts/popper.min.js') }}"></script>
+  
+  <!-- Bootstrap scripts/CSS -->
+  <script src="{{ url_for('static', filename='scripts/bootstrap.min.js') }}"></script>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style/bootstrap.min.css') }}">
+  <script src="{{ url_for('static', filename='scripts/bootstrap-select.min.js') }}"></script>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style/bootstrap-select.min.css') }}">
+  <script src="{{ url_for('static', filename='scripts/bootstrap-table.min.js') }}"></script>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style/bootstrap-table.min.css') }}">
+
+  <!-- Firebase scripts -->
+  <script src="{{ url_for('static', filename='scripts/firebase-app.js') }}"></script>
+  <script src="{{ url_for('static', filename='scripts/firebase-database.js') }}"></script>
+
+  <!-- vis.js scripts/CSS -->
+  <script type="text/javascript" src="{{ url_for('static', filename='scripts/vis.min.js') }}"></script>
+  <link href="{{ url_for('static', filename='style/vis.min.js') }}" rel="stylesheet" type="text/css" />
+  
+  <!-- Static fonts/icons -->
   <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
 
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
-    <!-- Latest compiled and minified CSS -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.2/css/bootstrap-select.min.css">
-
-  <!-- Latest compiled and minified JavaScript -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.2/js/bootstrap-select.min.js"></script>
-
-  <!-- Latest compiled and minified CSS -->
-  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/bootstrap-table.min.css">
-
-  <!-- Latest compiled and minified JavaScript -->
-  <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.12.1/bootstrap-table.min.js"></script>
-
-  <script src="https://www.gstatic.com/firebasejs/5.5.9/firebase-app.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/5.5.9/firebase-database.js"></script>
-  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.min.js"></script>
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/vis/4.21.0/vis.min.css" rel="stylesheet" type="text/css" />
-  <link rel="stylesheet" href="{{ url_for('static', filename='page.css') }}">
+  <!-- Local style -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='style/page.css') }}">
 </head>
 <body>
+  <!-- Body dependent scripts -->
   <script type="text/javascript"> var username = '{{ username }}' </script>
   <script type="text/javascript" src="{{ url_for('static', filename='firebaseAPI/api.js') }}"></script>
   <script type="text/javascript" src="{{ url_for('static', filename='graph/config.js') }}"></script>
   <script type="text/javascript" src="{{ url_for('static', filename='graph/graphVis.js') }}"></script>
-  <script type="text/javascript" src="{{ url_for('static', filename='base.js') }}"></script>
-
+  <script type="text/javascript" src="{{ url_for('static', filename='scripts/base.js') }}"></script>
   <div class="header">
     <div class="headernodewrapper" id="headerdiv">
         <div class="headernode">
@@ -70,7 +72,7 @@
   <div class="workspace">
     <div class="schedule-panel">
       <div class="calendar-panel">
-        <link rel="stylesheet" href="{{ url_for('static', filename='calendar.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='style/calendar.css') }}">
         <div id="calendar" class="calendar" calendar>
           <table class="table-bordered">
             <tbody>
@@ -197,7 +199,7 @@
         </div>
       </div>
     <div class="tab-panel">
-    <link rel="stylesheet" href="{{ url_for('static', filename='tab-panel.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style/tab-panel.css') }}">
       <!-- Tab links -->
       <div class="tabs">
         <button class="tablink" onclick="openTab(event, 'selection')">Courses</button>
@@ -207,8 +209,8 @@
       <!-- Tab content -->
       <div id="selection" class="tabcontent">
         <div id="courses-content">
-          <link rel="stylesheet" href="{{ url_for('static', filename='courses.css') }}">
-          <script type="text/javascript" src="{{ url_for('static', filename='courses.js') }}"></script>
+          <link rel="stylesheet" href="{{ url_for('static', filename='style/courses.css') }}">
+          <script type="text/javascript" src="{{ url_for('static', filename='scripts/courses.js') }}"></script>
 
           <div id="accordion">
             
