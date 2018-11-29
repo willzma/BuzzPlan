@@ -42,7 +42,13 @@ function getSubjects() {
 
 function showSubjects() {
     var subjectList = document.getElementById('subject-list')
+    var subjectButton = document.getElementById('subject-button')
     var courseList = document.getElementById('course-list')
+    var courseButton = document.getElementById('course-button')
+    var courseSections = document.getElementById('course-sections')
+
+    subjectButton.textContent = 'select subject...'
+    courseButton.textContent = 'select course...'
     for (var i = 0; !ALREADY_POPULATED && i < SUBJECTS.length; i++) {
         var subjectName = window.subjnames[SUBJECTS[i]]
         var element = document.createElement('a')
@@ -50,6 +56,8 @@ function showSubjects() {
         element.setAttribute('onclick', "getCoursesDropdown(\'" + SUBJECTS[i] + "\')")
         subjectList.appendChild(element)
     }
+
+    courseSections.style.display = 'none'
 
     if (courseList.className === 'dropdown-content show') {
         courseList.classList.toggle('show')
@@ -74,8 +82,11 @@ function filterSubjects() {
 
 function getCoursesDropdown(subject) {
     var subjectList = document.getElementById('subject-list')
+    var subjectButton = document.getElementById('subject-button')
     var courseDropdown = document.getElementById('course-dropdown')
     var courseList = document.getElementById('course-list')
+
+    subjectButton.textContent = subject + ' - ' + window.subjnames[subject]
     db.ref('courses_by_abbr').child(subject).once('value').then(function(snapshot) {
         window.abbrData = snapshot.val()
         while (courseList.firstChild) {
@@ -132,11 +143,13 @@ function filterCourses() {
 
 function testHover(event){
     console.log('Hover!!')
-    
     //el.setAttribute('on', 'true')
 }
 
 function getCourseSections(course) {
+    var courseButton = document.getElementById('course-button')
+    courseButton.textContent = course
+
     var courseSections = document.getElementById('course-sections')
     while (courseSections.firstChild) {
         courseSections.removeChild(courseSections.firstChild)
@@ -174,8 +187,6 @@ function getCourseSections(course) {
     var courseData = abbrData[course]
     var sections = courseData['sections']
     window.crn2courseData = {}
-
-
 
     for (var i = 0; i < sections.length; i++) {
         var tr = document.createElement('tr')
@@ -254,7 +265,6 @@ function getCourseSections(course) {
 }
 
 function register(crn, code){
-
     if (!window.schedule.hasOwnProperty(crn)){
         window.schedule[crn] = []
         window.schedule[crn].push(addDropdownSection(crn))
@@ -277,8 +287,6 @@ function unregister(crn){
         delete window.schedule[crn]
     }
 }
-
-
 
 function updateSchedule(crn, code){
     if (!window.schedule.hasOwnProperty(crn)){
@@ -396,9 +404,9 @@ function addDropdownSection(crn){
     innerBody.appendChild(head)
 
     p = document.createElement('p')
-    if (courseData['courseInfo'].hasOwnProperty('description')){
+    if (courseData['courseInfo'].hasOwnProperty('description')) {
         p.appendChild(document.createTextNode(courseData['courseInfo']['description']))
-    }else{
+    } else {
         p.appendChild(document.createTextNode(''))
     }
     innerBody.appendChild(p)
@@ -434,14 +442,13 @@ function addClass(code, day, startTime, duration, location, color) {
     var height = 100 * duration / CALENDAR_RANGE;
 
     //remove the clicked class on calendar
-    div1.onclick = function() {document.getElementsByClassName('wk-day-body')[day].removeChild(div1);};
+    div1.onclick = function() { document.getElementsByClassName('wk-day-body')[day].removeChild(div1); };
 
     // TODO: Add randomized colors for course bubbles (don't repeat).
 
     div1.style.top = startPosition + '%';
     div1.style.height = height + '%';
 
-    
     div2.style.backgroundColor = color;
     div2.style.borderColor = color;
 
