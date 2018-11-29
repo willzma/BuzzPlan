@@ -13,32 +13,44 @@ if __name__ == '__main__':
     tables_with_errors = []
     catalog = scrape_raw()
     for program in catalog:
-        for degree in program:
-            if 'threads' in degree:
-                for thread in degree['threads']:
-                    requirements = thread['requirements']
+        print(program)
+        for degree in catalog[program]:
+            print(degree)
+            if 'threads' in catalog[program][degree]:
+                for thread in catalog[program][degree]['threads']:
+                    print(thread)
+                    requirements = catalog[program][degree]['threads'][thread]['requirements']
                     empty_count, invalid_count = 0, 0
                     for req in requirements:
-                        if req.codes == []:
-                            num_tables_with_empty_requirements += 1
+                        if req['codes'] == []:
                             empty_count += 1
-                        if req.hours == -1:
-                            num_tables_with_invalid_hours += 1
+                        if req['hours'] == -1:
                             invalid_count += 1
+                    if empty_count:
+                        num_tables_with_empty_requirements += 1
+                    if invalid_count:
+                        num_tables_with_invalid_hours += 1
                     tables_with_errors.append((thread, empty_count, invalid_count))
             else:
-                requirements = degree['requirements']
-                empty_count, invalid_count = 0, 0
-                for req in requirements:
-                    if req.codes == []:
+                if 'requirements' in catalog[program][degree]:
+                    requirements = catalog[program][degree]['requirements']['requirements']
+                    empty_count, invalid_count = 0, 0
+                    for req in requirements:
+                        if req['codes'] == []:
+                            empty_count += 1
+                        if req['hours'] == -1:
+                            invalid_count += 1
+                    if empty_count:
                         num_tables_with_empty_requirements += 1
-                        empty_count += 1
-                    if req.hours == -1:
+                    if invalid_count:
                         num_tables_with_invalid_hours += 1
-                        invalid_count += 1
-                tables_with_errors.append((thread, empty_count, invalid_count))
+                    tables_with_errors.append((degree + ' in ' + program, empty_count, invalid_count))
     print('{} tables had empty requirements.'.format(num_tables_with_empty_requirements))
     print('{} tables had invalid hours.'.format(num_tables_with_invalid_hours))
     with open ('post_scrape_stats.csv', 'w') as file:
         for course in tables_with_errors:
-            file.write('{}, {}, {}, {}'.format(course[0], course[1], course[2], course[2] + course[3]))
+            print(course)
+            file.write('{}, {}, {}, {}\n'.format(course[0].replace(u'\u200b', ' '), 
+            course[1], 
+            course[2], 
+            course[1] + course[2]))
