@@ -48,9 +48,9 @@ function addCatalogOption(){
 
                     var option = document.createElement('option')
                     if (window.userData['courseHistory'].has(req_id)){
-                        option.setAttribute('data-content', '<i class="far fa-check" style="color: green;"></i> ' + req_id)
+                        option.setAttribute('data-content', '<i class="fas fa-check" style="color: green;"></i> ' + req_id)
                     }else{
-                        option.setAttribute('data-content', '<i class="far fa-times" style="color: red;"></i> ' + req_id)
+                        option.setAttribute('data-content', '<i class="fas fa-times" style="color: red;"></i> ' + req_id)
                     }
 
                     option.setAttribute('value', req_id)
