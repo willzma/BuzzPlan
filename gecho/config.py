@@ -56,7 +56,9 @@ class Statistics:
     num_programs = 0
     num_degrees = 0
     num_degrees_with_threads = 0
+    num_degrees_with_no_requirements = 0
     num_threads = 0
+    num_threads_with_no_requirements = 0
     num_rows = 0
     num_rows_with_no_course_codes = 0
     num_areaheaders = 0

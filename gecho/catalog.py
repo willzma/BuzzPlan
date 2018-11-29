@@ -87,19 +87,25 @@ def scrape_raw():
                                 result = get_reqs(thread_dom, stats, program_name in no_reqs_tabs, full_degree_name)
                                 if result:
                                     degree_dict['threads'][result[1]] = result[0]
+                                else:
+                                    stats.num_threads_with_no_requirements += 1
                                 stats.num_threads += 1
                             stats.num_degrees_with_threads += 1
                     else:
                         result = get_reqs(degree_dom, stats, original_degree_name=full_degree_name)
                         if result:
                             degree_dict['requirements'] = result[0]
+                        else:
+                            stats.num_degrees_with_no_requirements += 1
                 program_dict[degree_name] = degree_dict
                 stats.num_degrees += 1
         catalog_dict[program_name] = program_dict
         stats.num_programs += 1
         print("\n")
-    log.info("Processed {} degrees in {} programs.".format(str(stats.num_degrees), str(stats.num_programs)))
-    log.info("Processed {} concentrations/threads in {} degrees".format(str(stats.num_threads), str(stats.num_degrees_with_threads)))
+    log.info("{} degrees in {} programs processed.".format(stats.num_degrees, stats.num_programs))
+    log.info("{} degrees had no requirements information.".format(stats.num_degrees_with_no_requirements))
+    log.info("{} concentrations/threads in {} degrees processed.".format(stats.num_threads, stats.num_degrees_with_threads))
+    log.info("{} concentrations/threads had no requirements.".format(stats.num_threads_with_no_requirements))
     log.info("{} out of {} processed table rows had no course codes.".format(stats.num_rows_with_no_course_codes, stats.num_rows))
     log.info("{} rows were areaheaders.".format(stats.num_areaheaders))
     log.info("{} rows were comments.".format(stats.num_comments))
