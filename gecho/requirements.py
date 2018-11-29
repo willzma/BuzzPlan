@@ -30,6 +30,7 @@ def get_reqs(degree_dom, stats, no_reqs_tab=False, original_degree_name=None):
     Currently assumes the more consistent bachelor's degree format.
     '''
     has_errors = False
+    has_unresolved_comments = False
 
     reqs = degree_dom if no_reqs_tab else degree_dom.xpath('//*[@id="requirementstexttab"]')[0]
     full_degree_name = degree_dom.xpath('//*[@id="content"]/h1/text()')[0]
@@ -103,7 +104,8 @@ def get_reqs(degree_dom, stats, no_reqs_tab=False, original_degree_name=None):
                     any_encodings.append(any)
                 req['codes'] = any_encodings
             else:
-                stats.num_tables_with_unresolved_comments += 1
+                stats.num_unresolved_comments += 1
+                has_unresolved_comments = True
             reqs_dict['requirements'].append(req) # Safe default option (potentially empty codes)
             stats.num_comments += 1
         elif blockindent and code: # Append to the previous requirement (note that this has lesser priority)
@@ -121,6 +123,8 @@ def get_reqs(degree_dom, stats, no_reqs_tab=False, original_degree_name=None):
                 current_req = {'codes': [code], 'hours': hours}
                 reqs_dict['requirements'].append(current_req)
                 stats.num_courses += 1
+    if has_unresolved_comments:
+        stats.num_tables_with_unresolved_comments += 1
     if has_errors:
         stats.num_tables_with_errors += 1
     return reqs_dict, full_degree_name

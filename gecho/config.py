@@ -63,6 +63,7 @@ class Statistics:
     num_rows_with_no_course_codes = 0
     num_areaheaders = 0
     num_comments = 0
+    num_unresolved_comments = 0
     num_courses = 0
     num_tables_with_errors = 0
     num_tables_with_unresolved_comments = 0

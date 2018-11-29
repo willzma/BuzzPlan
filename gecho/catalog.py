@@ -111,7 +111,7 @@ def scrape_raw():
     log.info("{} rows were comments.".format(stats.num_comments))
     log.info("{} rows were courses.".format(stats.num_courses))
     log.info("{} tables had errors.".format(stats.num_tables_with_errors))
-    log.info("{} tables had unresolved comments.".format(stats.num_tables_with_unresolved_comments))
+    log.info("{} tables had {} unresolved comments.".format(stats.num_tables_with_unresolved_comments, stats.num_unresolved_comments))
     log.info("Fun fact: have you noticed that EVERY degree is a science degree, according to our catalog?")
     return catalog_dict
 
