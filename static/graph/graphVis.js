@@ -313,6 +313,24 @@ function addLegend(container_id){
                   on: false,
                   build: false,
                   color: color_style['green']
+                  },
+                  { id: 'test1', 
+                  label: 'test', 
+                  shape: 'box',
+                  level: 0,
+                  inDegree: 0,
+                  on: false,
+                  build: false,
+                  color: color_style['green']
+                  },
+                  { id: 'test2', 
+                  label: 'test', 
+                  shape: 'box',
+                  level: 0,
+                  inDegree: 0,
+                  on: false,
+                  build: false,
+                  color: color_style['green']
                   }]
 
     var nodes = new vis.DataSet(nodes)

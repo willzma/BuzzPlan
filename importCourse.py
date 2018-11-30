@@ -8,14 +8,6 @@ from firebase_admin import credentials, db, firestore
 
 pp = pprint.PrettyPrinter(indent=4)
 
-def valid_identifier(identifier):
-	splited = identifier.split(' ')
-
-	if len(splited) != 2 or not splited[0].isupper() or not splited[1].isdigit():
-		return False
-
-	return True
-
 def add_description():
 	course_offer = db.reference('Courses_2019_Spring').get()
 
@@ -26,118 +18,6 @@ def add_description():
 
 		print(description)
 		db.reference('Courses_2019_Spring').child(c).child('description').set(description)
-
-
-def process_prerequisite(pre):
-	if 'courses' not in pre or 'type' not in pre:
-		return None
-
-	pre_list = pre['courses']
-	pre_type = pre['type']
-
-	process_list = []
-
-	for element in pre_list:
-		if type(element) == type(str()):
-			if valid_identifier(element):
-				process_list.append(element)
-
-		elif type(element) == type({}):
-			if 'courses' not in element or 'type' not in element:
-				continue
-
-			nest_list = element['courses']
-			nest_type = element['type']
-			nest_process_list = []
-
-			for nest_element in nest_list:
-				if type(nest_element) != type(str()):
-					print ('WARNING: unexpect data structure in second level: %s' % type(nest_element))
-					pp.pprint(pre)
-					continue
-
-				if valid_identifier(nest_element):
-					nest_process_list.append(nest_element)
-
-			if len(nest_process_list) == 0:
-				continue
-
-			if nest_type == pre_type or len(nest_process_list) == 1:
-				print ('Merge second level object to first level.')
-				process_list.extend(nest_process_list)
-				continue
-
-			process_list.append({'courses': nest_process_list,
-								 'type': nest_type})
-
-		else:
-			print ('WARNING: unexpect data structure in first level: %s' % type(element))
-
-
-
-	if len(process_list) == 0:
-		return None
-
-	if len(process_list) == 1 and type(process_list[0]) == type({}):
-		return process_list[0]
-
-	return {'courses': process_list,
-			'type': pre_type}
-
-def updatePrerequisite(filepath):
-	print ("Start updating prerequisites from %s" % filepath)
-
-	with open(filepath, 'r') as f:
-		courses = json.load(f)
-
-	prerequisites = db.reference('Prerequisites')
-	#prerequisites.delete()	
-
-	processed_pre = {}
-	for c in courses:
-		if 'prerequisites' in c:
-			processed = process_prerequisite(c['prerequisites'])
-			if not processed:
-				continue
-
-			processed_pre[c['identifier']] = processed
-
-			#prerequisites.child(c['identifier']).set(processed)
-
-	prerequisite_map = db.reference('prerequisite_map')
-	pre_map = create_map(processed_pre)
-
-	print (pre_map['MATH 4320'])
-	print (processed_pre['MATH 1111'])
-	prerequisite_map.set(pre_map)
-
-
-def create_map(prerequisites):
-	pre_map = {}
-	for cls in prerequisites.keys():
-		encounter_cls = set()
-		print ('Processing prerequisite map for %s' % cls)
-		dfs(cls, prerequisites, encounter_cls)
-		pre_map[cls] = list(encounter_cls)
-
-	return pre_map
-			
-
-def dfs(cur, prerequisites, encounter_cls):
-	#print (cur)
-	if type(cur) == type(str()):
-		if cur in prerequisites:
-			if cur in encounter_cls:
-				print ("WARNING: Cycle detected...")
-				return 
-			encounter_cls.add(cur)
-			dfs(prerequisites[cur], prerequisites, encounter_cls)
-
-	else:
-		for obj in cur['courses']:
-			dfs(obj, prerequisites, encounter_cls)
-
-
 
 
 
@@ -210,8 +90,7 @@ if __name__ == '__main__':
 	print ()
 
 	#importData(args.filepath)
-	#updatePrerequisite(args.filepath)
-	add_description()
+	#add_description()
 	
 
 
