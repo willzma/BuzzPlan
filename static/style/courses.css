@@ -1,0 +1,105 @@
+.dropdown-button {
+    display: inline-block;
+    position: relative;
+    cursor: pointer;
+    height: 35px;
+    line-height: 35px;
+    padding: 0 1.5rem;
+    color: #424242;
+    font-size: 14px;
+    font-weight: 600;
+    font-family: 'Roboto', sans-serif;
+    width: 100%;
+    letter-spacing: .8px;
+    text-align: center;
+    text-decoration: none;
+    text-transform: uppercase;
+    vertical-align: middle;
+    white-space: nowrap;
+    outline: none;
+    border: none;
+    user-select: none;
+    border-radius: 2px;
+    transition: all .3s ease-out;
+    box-shadow: 0 2px 5px 0 rgba(0,0,0,0.225);
+}
+
+.dropdown-button:hover, .dropdown-button:focus {
+    text-decoration: none; box-shadow: 0 4px 10px 0px rgba(0,0,0,0.225);
+}
+
+#search-subject {
+    background-image: url('../searchicon.png');
+    background-position: 6px 6px;
+    background-repeat: no-repeat;
+    font-size: 14px;
+    width: 100%;
+    padding: 4px;
+    padding-left: 28px;
+    border: none;
+    border-bottom: 1px solid #ddd;
+    overflow: auto;
+    overflow-x: hidden;
+}
+
+#search-subject:focus {outline: 3px solid #ddd;}
+
+#search-course {
+    background-image: url('searchicon.png');
+    background-position: 6px 6px;
+    background-repeat: no-repeat;
+    font-size: 14px;
+    width: 100%;
+    padding: 4px;
+    padding-left: 28px;
+    border: none;
+    border-bottom: 1px solid #ddd;
+    overflow: auto;
+    overflow-x: hidden;
+}
+
+#search-course:focus {outline: 3px solid #ddd;}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+    padding-bottom: 12px;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f6f6f6;
+    min-width: 230px;
+    width: 100%;
+    max-height: 400px;
+    overflow: auto;
+    overflow-x: hidden;
+    border: 1px solid #ddd;
+    z-index: 1;
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 4px;
+    font-size: 14px;
+    width: 100%;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown a:hover {background-color: #ddd;}
+
+.show {display: block;}
+
+.table-wrapper-scroll-y {
+    display: block;
+    max-height: 200px;
+    overflow-y: auto;
+    -ms-overflow-style: -ms-autohiding-scrollbar;
+}
+
+.btn {
+    padding: 0;
+}

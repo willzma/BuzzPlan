@@ -5,8 +5,8 @@
 <meta charset = "utf-8">
 <title>Sign Up</title>
 <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
-<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-<link rel="stylesheet" href="{{ url_for('static', filename='signup.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='style/style.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='style/signup.css') }}">
 </head>
 <body>
     <form method="POST" enctype="multipart/form-data">
@@ -55,10 +55,10 @@
         <button type="submit" class="start-scheduling">Start scheduling</button>
         </div>
     </form> 
-    <script src="https://www.gstatic.com/firebasejs/5.5.9/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/5.5.9/firebase-database.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="{{ url_for('static', filename='scripts/firebase-app.js') }}"></script>
+    <script src="{{ url_for('static', filename='scripts/firebase-database.js') }}"></script>
+    <script src="{{ url_for('static', filename='scripts/jquery.min.js') }}"></script>
     <script type="text/javascript" src="{{url_for('static', filename='firebaseAPI/api.js')}}"></script>
-    <script type="text/javascript" src="{{url_for('static', filename='signup.js')}}"></script>
+    <script type="text/javascript" src="{{url_for('static', filename='scripts/signup.js')}}"></script>
 </body>
 </html>

@@ -3,15 +3,15 @@ Functions for massaging requirements data from catalog.gatech.edu into Python di
 Objects could help to solve the problem of multiple options for a course req.
 '''
 
-from gecho.courses import lookup_course, parse_hours
-from gecho.utils import asciify_spaces
-from gecho.words import words
+from courses import lookup_course, parse_hours
+from utils import asciify_spaces
+from words import words
 from lxml import html
 import logging
 import re
 
 
-log = logging.getLogger('catalog')
+log = logging.getLogger('gecho')
 
 
 def get_footnotes(container):
@@ -25,10 +25,13 @@ def get_footnotes(container):
     raise NotImplementedError
 
 
-def get_reqs(degree_dom, no_reqs_tab=False, original_degree_name=None):
+def get_reqs(degree_dom, stats, no_reqs_tab=False, original_degree_name=None):
     '''
     Currently assumes the more consistent bachelor's degree format.
     '''
+    has_errors = False
+    has_unresolved_comments = False
+
     reqs = degree_dom if no_reqs_tab else degree_dom.xpath('//*[@id="requirementstexttab"]')[0]
     full_degree_name = degree_dom.xpath('//*[@id="content"]/h1/text()')[0]
     table = reqs.xpath("//*[contains(@class, 'sc_courselist')]")
@@ -42,6 +45,7 @@ def get_reqs(degree_dom, no_reqs_tab=False, original_degree_name=None):
 
     reqs_dict = {'requirements': []}
     for row in table:
+        stats.num_rows += 1
         row_type, row_text = row.attrib['class'], row.xpath('.//text()')
         if 'areaheader' in row_type:
             log.info("Parsing requirements for {} area".format(row_text[0]))
@@ -68,17 +72,20 @@ def get_reqs(degree_dom, no_reqs_tab=False, original_degree_name=None):
                     last = True
                 if 'areaheader' in node.attrib['class']:
                     content = node.xpath('.//text()')
-                    if content is not None and content[0].strip() == 'Total Credit Hours':
+                    if content is not None:
                         areaheader = content[0].strip()
-                        last = True
+                        last = content[0].strip() == 'Total Credit Hours'
             node_queue.extend(node)
-        if areaheader and not comment and not last:
+        if areaheader and not last:
             if hours != (-1):
                 reqs_dict['requirements'].append({'comment': areaheader, 'codes': [], 'hours': hours})
+            else:
+                stats.num_areaheaders += 1
         elif last and not code: # Set number of credit hours for the degree/thread/concentration
             reqs_dict['total_credit_hours'] = hours
         elif is_or and code: # Append to the previous requirement
             reqs_dict['requirements'][-1]['codes'].append(code)
+            stats.num_courses += 1
         elif comment and not code:
             req = {'comment': comment, 'codes': [], 'hours': hours}
             # Search manually written annotations/additions to fill in most unstructured data
@@ -96,17 +103,29 @@ def get_reqs(degree_dom, no_reqs_tab=False, original_degree_name=None):
                     any = any + '.filter({})'.format(abbrs[0]) if len(abbrs) > 1 else any
                     any_encodings.append(any)
                 req['codes'] = any_encodings
+            else:
+                stats.num_unresolved_comments += 1
+                has_unresolved_comments = True
             reqs_dict['requirements'].append(req) # Safe default option (potentially empty codes)
+            stats.num_comments += 1
         elif blockindent and code: # Append to the previous requirement (note that this has lesser priority)
             reqs_dict['requirements'][-1]['codes'].append(code)
+            stats.num_courses += 1
         else:
             if not code:
                 log.warning("Skipped table row with no course code {}".format(html.tostring(row)))
+                stats.num_rows_with_no_course_codes += 1
+                has_errors = True
             else:
                 if hours == (-1):
                     log.warning("{}: No hours for course {} in table, looking up...".format(full_degree_name, code))
                     code, name, hours, description = lookup_course(code)
                 current_req = {'codes': [code], 'hours': hours}
                 reqs_dict['requirements'].append(current_req)
+                stats.num_courses += 1
+    if has_unresolved_comments:
+        stats.num_tables_with_unresolved_comments += 1
+    if has_errors:
+        stats.num_tables_with_errors += 1
     return reqs_dict, full_degree_name
                 

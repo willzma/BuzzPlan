@@ -21,28 +21,24 @@ potentially convert to text using pdftotext or something or
 other and then upload to this package/webapp to be parsed.
 '''
 
-from gecho.config import catalog_url, supported_degrees, excluded_programs, excluded_degrees, no_reqs_tabs
-from gecho.config import num_programs, num_degrees, num_degrees_with_threads, num_threads
-from gecho.requirements import get_reqs
-from gecho.utils import get_hrefs
+from config import catalog_url, supported_degrees, excluded_programs, excluded_degrees, no_reqs_tabs
+from config import Statistics
+from requirements import get_reqs
+from utils import get_hrefs
 from lxml import html
 import logging
 import requests
 import json
 
 
-log = logging.getLogger('catalog')
+log = logging.getLogger('gecho')
 
 
 def scrape_raw():
     '''
     Scrapes the raw catalog data into Python dicts.
     '''
-
-    global num_programs
-    global num_degrees
-    global num_degrees_with_threads
-    global num_threads
+    stats = Statistics()
 
     catalog = requests.get(catalog_url + '/programs')
     catalog_tree = html.fromstring(catalog.content)
@@ -88,23 +84,35 @@ def scrape_raw():
                             hrefs, degree_dict['threads'] = get_hrefs(container), {}
                             for href in hrefs:
                                 thread_dom = html.fromstring(requests.get(catalog_url + href).content)
-                                result = get_reqs(thread_dom, program_name in no_reqs_tabs, full_degree_name)
+                                result = get_reqs(thread_dom, stats, program_name in no_reqs_tabs, full_degree_name)
                                 if result:
                                     degree_dict['threads'][result[1]] = result[0]
-                                num_threads += 1
-                            num_degrees_with_threads += 1
+                                else:
+                                    stats.num_threads_with_no_requirements += 1
+                                stats.num_threads += 1
+                            stats.num_degrees_with_threads += 1
                     else:
-                        result = get_reqs(degree_dom, original_degree_name=full_degree_name)
+                        result = get_reqs(degree_dom, stats, original_degree_name=full_degree_name)
                         if result:
                             degree_dict['requirements'] = result[0]
+                        else:
+                            stats.num_degrees_with_no_requirements += 1
                 program_dict[degree_name] = degree_dict
-                num_degrees += 1
+                stats.num_degrees += 1
         catalog_dict[program_name] = program_dict
-        num_programs += 1
+        stats.num_programs += 1
         print("\n")
-    log.info("Processed {} degrees in {} programs.".format(str(num_degrees), str(num_programs)))
-    log.info("Processed {} concentrations/threads in {} degrees".format(str(num_threads), str(num_degrees_with_threads)))
-    log.info("Have you noticed that EVERY degree is a science degree, according to our catalog?")
+    log.info("{} degrees in {} programs processed.".format(stats.num_degrees, stats.num_programs))
+    log.info("{} degrees had no requirements information.".format(stats.num_degrees_with_no_requirements))
+    log.info("{} concentrations/threads in {} degrees processed.".format(stats.num_threads, stats.num_degrees_with_threads))
+    log.info("{} concentrations/threads had no requirements.".format(stats.num_threads_with_no_requirements))
+    log.info("{} out of {} processed table rows had no course codes.".format(stats.num_rows_with_no_course_codes, stats.num_rows))
+    log.info("{} rows were areaheaders.".format(stats.num_areaheaders))
+    log.info("{} rows were comments.".format(stats.num_comments))
+    log.info("{} rows were courses.".format(stats.num_courses))
+    log.info("{} tables had errors.".format(stats.num_tables_with_errors))
+    log.info("{} tables had {} unresolved comments.".format(stats.num_tables_with_unresolved_comments, stats.num_unresolved_comments))
+    log.info("Fun fact: have you noticed that EVERY degree is a science degree, according to our catalog?")
     return catalog_dict
 
 
